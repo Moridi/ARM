@@ -4,6 +4,6 @@ module Incrementer(in, out);
 	input[WORD_LENGTH - 1:0] in;
 	output[WORD_LENGTH - 1:0] out;
 
-	assign out = in + 1;	
+	assign out = in + 4;	
 	
 endmodule

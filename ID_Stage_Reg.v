@@ -4,5 +4,5 @@ module ID_Stage_Reg(
 	input[31:0] PC_in,
 	output reg[31:0] PC
 );
-	always @(clk, rst) PC <= PC_in;
+	always @(posedge clk, posedge rst) PC <= PC_in;
 endmodule

@@ -1,7 +1,7 @@
 `include "Defines.v"
 
-module ARM(input clk, rst);
-
+module ARM();
+	reg clk, rst;
 	wire freeze, Branch_taken, flush;
 	wire[`ADDRESS_LEN - 1:0] BranchAddr;
 	wire[`ADDRESS_LEN - 1:0] 	PC_IF, PC_IF_Reg,
@@ -16,6 +16,7 @@ module ARM(input clk, rst);
 	assign Branch_taken = 1'b0;
 	assign freeze = 1'b0;
 	assign BranchAddr = `ADDRESS_LEN'b0;
+	assign flush = 1'b0;
 	
 	IF_Stage IF_Stage(
 		.clk(clk), .rst(rst),
