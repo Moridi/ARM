@@ -1,7 +1,6 @@
 `include "Defines.v"
 
-module ARM();
-	reg clk, rst;
+module ARM(input clk, rst);
 	wire freeze, Branch_taken, flush;
 	wire[`ADDRESS_LEN - 1:0] BranchAddr;
 	wire[`ADDRESS_LEN - 1:0] 	PC_IF, PC_IF_Reg,
