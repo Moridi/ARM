@@ -1,0 +1,1 @@
+`define COND_LEN 4
