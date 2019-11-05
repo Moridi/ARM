@@ -1,77 +1,80 @@
 `include "Defines.v"
-`include "ISA.v"
 
 module ConditionalCheck (
     input [`COND_LEN - 1:0] cond,
     input [3:0] statusRegister,
-    output condState
+    output wire condState
     );
 
     wire z, c, n, v;
     // TODO: order of status registers must be checked.
     assign {z, c, n, v} = statusRegister;
 
+	reg tempCondition;
+	
+	assign condState = tempCondition;
+	
     always @(cond) begin
 
         case(cond)
             `COND_EQ : begin
-                condState <= z;
+                tempCondition <= z;
             end
 
             `COND_NE : begin
-                condState <= ~z;
+                tempCondition <= ~z;
             end
 
             `COND_CS_HS : begin
-                condState <= c;
+                tempCondition <= c;
             end
 
             `COND_CC_LO : begin
-                condState <= ~c;
+                tempCondition <= ~c;
             end
 
             `COND_MI : begin
-                condState <= n;
+                tempCondition <= n;
             end
 
             `COND_PL : begin
-                condState <= ~n;
+                tempCondition <= ~n;
             end
 
             `COND_VS : begin
-                condState <= v;
+                tempCondition <= v;
             end
 
             `COND_VC : begin
-                condState <= ~v;
+                tempCondition <= ~v;
             end
 
             `COND_HI : begin
-                condState <= c & ~z;
+                tempCondition <= c & ~z;
             end
 
             `COND_LS : begin
-                condState <= ~c & z;
+                tempCondition <= ~c & z;
             end
 
             `COND_GE : begin
-                condState <= (n & v) | (~n & ~v);
+                tempCondition <= (n & v) | (~n & ~v);
             end
 
             `COND_LT : begin
-                condState <= (n & ~v) | (~n & v);
+                tempCondition <= (n & ~v) | (~n & v);
             end
 
             `COND_GT : begin
-                condState <= ~z & ((n & v) | (~n & ~v));
+                tempCondition <= ~z & ((n & v) | (~n & ~v));
             end
 
             `COND_LE : begin
-                condState <= z & ((n & ~v) | (~n & v));
+                tempCondition <= z & ((n & ~v) | (~n & v));
             end
 
             `COND_LE : begin
-                condState <= 1`b1;
+                tempCondition <= 1'b1;
             end
         endcase
     end

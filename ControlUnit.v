@@ -16,66 +16,63 @@ module ControlUnit(
 			branch_taken, status_write_enable;
 		
 	always @(mode, opcode, s) begin
-		execute_command = 0; mem_read = 0;
-		mem_write = 0; wb_enable = 0;
-		immediate = 0; branch_taken = 0;
-		status_write_enable = 0;
-		
-		
+
 		case (mode)
 			`ARITHMETHIC_TYPE : begin
-				`MOV : begin
-					
-				end
+				case (opcode)
+					`MOV : begin
+						
+					end
 
-				`MOVN : begin
-					
-				end
+					`MOVN : begin
+						
+					end
 
-				`ADD : begin
-					
-				end
+					`ADD : begin
+						
+					end
 
-				`ADC : begin
-					
-				end
+					`ADC : begin
+						
+					end
 
-				`SUB : begin
-					
-				end
+					`SUB : begin
+						
+					end
 
-				`SBC : begin
-					
-				end
+					`SBC : begin
+						
+					end
 
-				`AND : begin
-					
-				end
+					`AND : begin
+						
+					end
 
-				`ORR : begin
-					
-				end
+					`ORR : begin
+						
+					end
 
-				`EOR : begin
-					
-				end
+					`EOR : begin
+						
+					end
 
-				`CMP : begin
-					
-				end
+					`CMP : begin
+						
+					end
 
-				`TST : begin
-					
-				end
+					`TST : begin
+						
+					end
 
-				`LDR : begin
-					
-				end
+					`LDR : begin
+						
+					end
 
-				`STR : begin
-					
-				end
+					`STR : begin
+						
+					end
 
+				endcase
 			end
 
 			`MEMORY_TYPE : begin
@@ -85,6 +82,7 @@ module ControlUnit(
 			`BRANCH_TYPE : begin
 				
 			end		
-		end
+		endcase
 		
+	end
 endmodule
