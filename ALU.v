@@ -2,7 +2,7 @@
 
 module ALU(
 		input [`REGISTER_LEN - 1:0] alu_in1, alu_in2,
-        input [`REGISTER_LEN - 1:0] alu_command,
+        input [`EXECUTE_COMMAND_LEN - 1:0] alu_command,
         input cin,
 
         output wire [`REGISTER_LEN - 1:0] alu_out,
