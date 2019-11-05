@@ -30,7 +30,7 @@ module ARM(input clk, rst);
 			.PC_in(PC_IF), .Instruction_in(Instruction_IF),
 			.PC(PC_IF_Reg), .Instruction(Instruction_IF_Reg));
 				
-	ID_Stage ID_Stage(.clk(clk), .rst(rst), .PC_in(PC_IF_Reg), .PC(PC_ID));
+	ID_Stage ID_Stage(.clk(clk), .rst(rst), .PC_in(PC_IF_Reg), .Instruction_in(Instruction_IF_Reg), .PC(PC_ID));
 
 	ID_Stage_Reg ID_Stage_Reg(.clk(clk), .rst(rst), .PC_in(PC_ID), .PC(PC_ID_Reg));
 
