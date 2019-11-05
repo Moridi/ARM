@@ -13,19 +13,20 @@
 `define MEMORY_TYPE 2'b01
 `define BRANCH_TYPE 2'b10
 
-`define MOV 4'b0001
-`define MOVN 4'b1001
-`define ADD 4'b0010
-`define ADC 4'b0011
-`define SUB 4'b0100
-`define SBC 4'b0101
-`define AND 4'b0110
-`define ORR 4'b0111
-`define EOR 4'b1000
-`define CMP 4'b0100
-`define TST 4'b0110
-`define LDR 4'b0010
-`define STR 4'b0010
+// Instruction OpCode
+`define MOV_EXE 4'b0001
+`define MOVN_EXE 4'b1001
+`define ADD_EXE 4'b0010
+`define ADC_EXE 4'b0011
+`define SUB_EXE 4'b0100
+`define SBC_EXE 4'b0101
+`define AND_EXE 4'b0110
+`define ORR_EXE 4'b0111
+`define EOR_EXE 4'b1000
+`define CMP_EXE 4'b0100
+`define TST_EXE 4'b0110
+`define LDR_EXE 4'b0010
+`define STR_EXE 4'b0010
 
 `define COND_EQ 4'b0000
 `define COND_NE 4'b0001
@@ -42,4 +43,9 @@
 `define COND_GT 4'b1100
 `define COND_LE 4'b1101
 `define COND_AL 4'b1110
+
+`define S_ZERO 1'b0
+`define S_ONE 1'b1
+`define ENABLE 1'b1
+`define DISABLE 1'b0
 
