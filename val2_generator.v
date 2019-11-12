@@ -14,20 +14,26 @@ module val2_generator(
 
         if (is_mem_command == `DISABLE) begin
 
-            if (immd == `ENABLE) begin
+            if (immd == 1'b0) begin
                 for (i = 0; i < shift_operand[11:8]; i = i + 1) begin
                     val2_out = {val2_out[1], val2_out[0], val2_out[31:2]}; 
                 end
 
-            end else if(immd == `DISABLE && shift_operand[4] == 0) begin
+            end else if(immd == 1'b0 && shift_operand[4] == 0) begin
                 case(shift_operand[6:5])
-                    `LSL_SHIFT_STATE : begin
-                    end
-                    `LSR_SHIFT_STATE : begin
-                    end
-                    `ASR_SHIFT_STATE : begin
-                    end
+                    `LSL_SHIFT_STATE : 
+                        val2_out = val2_out << shift_operand[11:7]
+
+                    `LSR_SHIFT_STATE :
+                        val2_out = val2_out >> shift_operand[11:7]
+                    
+                    `ASR_SHIFT_STATE :
+                        val2_out = val2_out >>> shift_operand[11:7]
+                        
                     `ROR_SHIFT_STATE : begin
+                        for (i = 0; i < shift_operand[11:7]; i = i + 1) begin
+                            val2_out = {val2_out[0], val2_out[31:1]}; 
+                        end
                     end
                 endcase
             end
