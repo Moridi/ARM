@@ -30,8 +30,36 @@ module ARM(input clk, rst);
 			.PC_in(PC_IF), .Instruction_in(Instruction_IF),
 			.PC(PC_IF_Reg), .Instruction(Instruction_IF_Reg));
 				
-	ID_Stage ID_Stage(.clk(clk), .rst(rst), .PC_in(PC_IF_Reg), .Instruction_in(Instruction_IF_Reg), .PC(PC_ID));
 
+	// ID Stage
+	
+	wire mem_read_ID_reg_in, mem_write_ID_reg_in,
+		wb_enable_ID_reg_in, immediate_ID_reg_in,
+		branch_taken_ID_reg_in, status_write_enable_ID_reg_in;
+		
+	wire[`EXECUTE_COMMAND_LEN - 1 : 0] execute_command_ID_reg_in;
+	wire[`REGISTER_LEN - 1:0] reg_file_ID_reg_in1, reg_file_ID_reg_in2;
+	wire two_src;
+	wire [`REG_ADDRESS_LEN - 1:0] dest_reg_ID_reg_in;
+	wire [24 - 1:0] signed_immediate_ID_reg_in;
+	wire [`SHIFT_OPERAND_LEN - 1:0] shift_operand_ID_reg_in;
+				
+	ID_Stage id_Stage(
+	.clk(clk), .rst(rst), .PC_in(PC_IF_Reg), .Instruction_in(Instruction_IF_Reg), .PC(PC_ID),
+	
+	.mem_read_out(mem_read_ID_reg_in), .mem_write_out(mem_write_ID_reg_in),
+		.wb_enable_out(wb_enable_ID_reg_in), .immediate_out(immediate_ID_reg_in),
+		.branch_taken_out(branch_taken_ID_reg_in),
+		.status_write_enable_out(status_write_enable_ID_reg_in),
+		
+	.execute_command_out(execute_command_ID_reg_in),
+	.reg_file_out1(reg_file_ID_reg_in), .reg_file_out2(reg_file_ID_reg_in),
+	.two_src(two_ID_reg_in),
+	.dest_reg_out(dest_reg_ID_reg_in),
+	.signed_immediate(signed_immediate_ID_reg_in),
+	.shift_operand(shift_operand_ID_reg_in));
+	
+	
 	ID_Stage_Reg ID_Stage_Reg(.clk(clk), .rst(rst), .PC_in(PC_ID), .PC(PC_ID_Reg));
 
 	EX_Stage EX_Stage(.clk(clk), .rst(rst), .PC_in(PC_ID_Reg), .PC(PC_EX));
