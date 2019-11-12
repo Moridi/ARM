@@ -1,6 +1,6 @@
 `include "Defines.v"
 
-module val2_generator(
+module Val2Generator(
 		input [`REGISTER_LEN - 1:0] Rm,
         input [11:0] shift_operand,
         input immd, is_mem_command,
