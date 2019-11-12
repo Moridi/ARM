@@ -51,3 +51,7 @@
 `define ENABLE 1'b1
 `define DISABLE 1'b0
 
+`define LSL_SHIFT_STATE 2'b00
+`define LSR_SHIFT_STATE 2'b01
+`define ASR_SHIFT_STATE 2'b10
+`define ROR_SHIFT_STATE 2'b11
