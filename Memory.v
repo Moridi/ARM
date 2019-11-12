@@ -4,17 +4,18 @@ module Memory(clk, rst, address, WriteData, MemRead, MemWrite, ReadData);
 	input[`INSTRUCTION_LEN - 1:0] WriteData;
 	input[`ADDRESS_LEN - 1:0] address;
 	input clk, rst, MemRead, MemWrite;
-	output reg[`INSTRUCTION_LEN - 1:0] ReadData;
+	output wire[`INSTRUCTION_LEN - 1:0] ReadData;
+	
 	integer counter = 0;
 
 	reg[`INSTRUCTION_MEM_LEN - 1:0] data[0:`INSTRUCTION_MEM_SIZE - 1];
-	wire address4k = {address[`ADDRESS_LEN:2], 2'b0} - 1024;
+	wire [`ADDRESS_LEN - 1:0] address4k = {address[`ADDRESS_LEN - 1:2], 2'b0} - 1024;
 	
-	wire address4k_p1 = {address4k[`ADDRESS_LEN:2], 2'b01}; // address4k + 1
-	wire address4k_p2 = {address4k[`ADDRESS_LEN:2], 2'b10}; // address4k + 2
-	wire address4k_p3 = {address4k[`ADDRESS_LEN:2], 2'b11}; // address4k + 3
+	wire [`ADDRESS_LEN - 1:0] address4k_p1 = {address4k[`ADDRESS_LEN - 1:2], 2'b01}; // address4k + 1
+	wire [`ADDRESS_LEN - 1:0] address4k_p2 = {address4k[`ADDRESS_LEN - 1:2], 2'b10}; // address4k + 2
+	wire [`ADDRESS_LEN - 1:0] address4k_p3 = {address4k[`ADDRESS_LEN - 1:2], 2'b11}; // address4k + 3
 
-	assign ReadData = MemRead ? 
+	assign ReadData = (MemRead == `ENABLE) ? 
 			{data[address4k], data[address4k_p1], data[address4k_p2], data[address4k_p3]}
 			: `INSTRUCTION_LEN'b0;
 
