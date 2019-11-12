@@ -1,8 +1,7 @@
 `include "Defines.v"
 
 module EX_Stage(
-	input clk,
-	input rst,
+	input clk, rst,
 	input[`ADDRESS_LEN - 1:0] PC_in,
 	input wb_en_in, mem_r_en_in, mem_w_en_in, status_w_en_in, branch_taken_in,
 	input immd,
@@ -12,12 +11,11 @@ module EX_Stage(
 	input [23:0] signed_immd_24,
 	input [11:0] shift_operand,
 
-
+	output[`ADDRESS_LEN - 1:0] PC_out,
+	output wb_en_out, mem_r_en_out, mem_w_en_out, status_w_en_out, branch_taken_out,
 	output [`REG_ADDRESS_LEN - 1:0] dest_out,
 	output [`REGISTER_LEN - 1:0] alu_res, val_Rm_out,
 	output [3:0] statusRegister,
-	output wb_en_out, mem_r_en_out, mem_w_en_out, status_w_en_out, branch_taken_out,
-	output[`ADDRESS_LEN - 1:0] PC_out,
 	output[`ADDRESS_LEN - 1:0] branch_address
 );
 	wire is_mem_command;
