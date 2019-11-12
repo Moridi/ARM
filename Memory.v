@@ -12,12 +12,12 @@ module Memory(clk, rst, address, WriteData, MemRead, MemWrite, ReadData);
 		if (rst) begin
 			//for(counter=16; counter < `INSTRUCTION_MEM_SIZE; counter=counter+1)
 				//data[counter] <= `INSTRUCTION_LEN'b0;
-			data[0] <= 8'b00000000;
+			data[0] <= 8'b00010000;
 			data[1] <= 8'b00000000;
 			data[2] <= 8'b00000000;
 			data[3] <= 8'b00000000;
 			
-			data[4] <= 8'b00000000;
+			data[4] <= 8'b11000000;
 			data[5] <= 8'b00100010;
 			data[6] <= 8'b00000000;
 			data[7] <= 8'b00000000;
