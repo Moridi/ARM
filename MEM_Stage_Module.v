@@ -8,9 +8,9 @@ module MEM_Stage_Module(
 	input [`REG_ADDRESS_LEN - 1:0] dest_in,
 
     // outputs from Reg:
-    output reg wb_en_out, mem_r_en_out,
-	output reg [`REGISTER_LEN - 1:0] alu_res_out, mem_res_out,
-	output reg [`REG_ADDRESS_LEN - 1:0] dest_out,
+    output wb_en_out, mem_r_en_out,
+	output [`REGISTER_LEN - 1:0] alu_res_out, mem_res_out,
+	output [`REG_ADDRESS_LEN - 1:0] dest_out,
 
     //outputs from stage:
     output wb_en_hazard_in,

@@ -4,27 +4,27 @@ module ID_Stage_Reg(
 	input clk,
 	input rst,
 
-	input PC_in,			
 	input mem_read_en_in,
 	input mem_write_en_in,
 	input wb_enable_in,
 	input immediate_in,
 	input branch_taken_in,
 	input status_write_enable_in,
-	input [`EXECUTE_COMMAND_LEN - 1 : 0] execute_command_in,
+	input [`ADDRESS_LEN - 1:0] PC_in,			
+	input [`EXECUTE_COMMAND_LEN - 1:0] execute_command_in,
 	input [`REGISTER_LEN - 1:0] reg_file_in1,
 	input [`REGISTER_LEN - 1:0] reg_file_in2,
 	input [`REG_ADDRESS_LEN - 1:0] dest_reg_in,
 	input [`SIGNED_IMMEDIATE_LEN - 1:0] signed_immediate_in,
 	input [`SHIFT_OPERAND_LEN - 1:0] shift_operand_in,
 
-	output wire PC_out,			
 	output wire mem_read_en_out,
 	output wire mem_write_en_out,
 	output wire wb_enable_out,
 	output wire immediate_out,
 	output wire branch_taken_out,
 	output wire status_write_enable_out,
+	output wire [`ADDRESS_LEN - 1:0] PC_out,
 	output wire [`EXECUTE_COMMAND_LEN - 1 : 0] execute_command_out,
 	output wire [`REGISTER_LEN - 1:0] reg_file_out1,
 	output wire [`REGISTER_LEN - 1:0] reg_file_out2,
@@ -33,7 +33,7 @@ module ID_Stage_Reg(
 	output wire [`SHIFT_OPERAND_LEN - 1:0] shift_operand_out
 );
 
-Register #(.WORD_LENGTH(1)) reg_PC_in(.clk(clk), .rst(rst), 
+Register #(.WORD_LENGTH(`ADDRESS_LEN)) reg_PC_in(.clk(clk), .rst(rst), 
 		.ld(1'b1), .in(PC_in), .out(PC_out));
 
 Register #(.WORD_LENGTH(1)) reg_mem_read_en_in(.clk(clk), .rst(rst), 

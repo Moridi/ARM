@@ -11,7 +11,7 @@ module EX_Stage(
 	input [23:0] signed_immd_24,
 	input [11:0] shift_operand,
 
-	output[`ADDRESS_LEN - 1:0] PC_out,
+	// output[`ADDRESS_LEN - 1:0] PC_out,
 	output wb_en_out, mem_r_en_out, mem_w_en_out, status_w_en_out, branch_taken_out,
 	output [`REG_ADDRESS_LEN - 1:0] dest_out,
 	output [`REGISTER_LEN - 1:0] alu_res, val_Rm_out,
@@ -21,7 +21,8 @@ module EX_Stage(
 	wire is_mem_command;
 	wire [`REGISTER_LEN - 1:0] val2;
 
-	assign PC_out = PC_in;
+	// @TODO: Check it out
+	// assign PC_out = PC_in;
 	assign wb_en_out = wb_en_in;
 	assign mem_r_en_out = mem_r_en_in;
 	assign mem_w_en_out = mem_w_en_in;
@@ -41,7 +42,8 @@ module EX_Stage(
 			.is_mem_command(is_mem_command), .val2_out(val2)
 	);
 
-	ALU alu(.alu_in1(val_Rn), .alu_in2(val2), .alu_command(exe_cmd),
+	// @TODO: Check the cin port
+	ALU alu(.alu_in1(val_Rn), .alu_in2(val2), .alu_command(exe_cmd), .cin(1'b0),
 			.alu_out(alu_res), .statusRegister(statusRegister)
 	);
 

@@ -26,7 +26,7 @@ module ID_Stage_Module(
 		output wire [`REGISTER_LEN - 1:0] reg_file_out1, reg_file_out2,
 		output wire [`REG_ADDRESS_LEN - 1:0] dest_reg_out,
 		output wire [`SIGNED_IMMEDIATE_LEN - 1:0] signed_immediate_out,
-		output wire [`SHIFT_OPERAND_LEN - 1:0] shift_operand
+		output wire [`SHIFT_OPERAND_LEN - 1:0] shift_operand_out
 );
 	
 	wire[`ADDRESS_LEN - 1:0] PC_middle;
