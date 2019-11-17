@@ -35,7 +35,7 @@ module IF_Stage (
 	
 	assign Instruction = ReadData;
 
-	Memory Instruction_Mem(.clk(clk), .rst(rst), .address(pc_out),
+	InstructionMemory Instruction_Mem(.clk(clk), .rst(rst), .address(pc_out),
 			.WriteData(instruction_write_data), .MemRead(MemRead),
 			.MemWrite(MemWrite), .ReadData(ReadData)
 	);

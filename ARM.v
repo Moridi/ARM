@@ -45,33 +45,40 @@ module ARM(input clk, rst);
 	wire [`SHIFT_OPERAND_LEN - 1:0] shift_operand_ID_reg_in;
 				
 	ID_Stage id_Stage(
-	.clk(clk), .rst(rst), .PC_in(PC_IF_Reg), .Instruction_in(Instruction_IF_Reg), .PC(PC_ID),
-	
-	.mem_read_out(mem_read_ID_reg_in), .mem_write_out(mem_write_ID_reg_in),
-		.wb_enable_out(wb_enable_ID_reg_in), .immediate_out(immediate_ID_reg_in),
+		.clk(clk), .rst(rst), .PC_in(PC_IF_Reg),
+		.Instruction_in(Instruction_IF_Reg), .PC(PC_ID),
+		.mem_read_out(mem_read_ID_reg_in),
+		.mem_write_out(mem_write_ID_reg_in),
+		.wb_enable_out(wb_enable_ID_reg_in),
+		.immediate_out(immediate_ID_reg_in),
 		.branch_taken_out(branch_taken_ID_reg_in),
-		.status_write_enable_out(status_write_enable_ID_reg_in),
+		.status_write_enable_out(status_write_enable_ID_reg_in),		
+		.execute_command_out(execute_command_ID_reg_in),
+		.reg_file_out1(reg_file_ID_reg_in1),
+		.reg_file_out2(reg_file_ID_reg_in2),
+		.two_src(two_ID_reg_in),
+		.dest_reg_out(dest_reg_ID_reg_in),
+		.signed_immediate(signed_immediate_ID_reg_in),
+		.shift_operand(shift_operand_ID_reg_in)
+		);
 		
-	.execute_command_out(execute_command_ID_reg_in),
-	.reg_file_out1(reg_file_ID_reg_in), .reg_file_out2(reg_file_ID_reg_in),
-	.two_src(two_ID_reg_in),
-	.dest_reg_out(dest_reg_ID_reg_in),
-	.signed_immediate(signed_immediate_ID_reg_in),
-	.shift_operand(shift_operand_ID_reg_in));
+	
+	// ID_Stage_Reg ID_Stage_Reg(.clk(clk), .rst(rst), .PC_in(PC_ID), .PC(PC_ID_Reg));
+
 	
 	
-	ID_Stage_Reg ID_Stage_Reg(.clk(clk), .rst(rst), .PC_in(PC_ID), .PC(PC_ID_Reg));
+	
+	
+	// EX_Stage EX_Stage(.clk(clk), .rst(rst), .PC_in(PC_ID_Reg), .PC(PC_EX));
 
-	EX_Stage EX_Stage(.clk(clk), .rst(rst), .PC_in(PC_ID_Reg), .PC(PC_EX));
+	// EX_Stage_Reg EX_Stage_Reg(.clk(clk), .rst(rst),
+		// .PC_in(PC_EX), .PC(PC_EX_Reg));
 
-	EX_Stage_Reg EX_Stage_Reg(.clk(clk), .rst(rst),
-		.PC_in(PC_EX), .PC(PC_EX_Reg));
+	// MEM_Stage MEM_Stage(.clk(clk), .rst(rst), .PC_in(PC_EX_Reg), .PC(PC_MEM));
 
-	MEM_Stage MEM_Stage(.clk(clk), .rst(rst), .PC_in(PC_EX_Reg), .PC(PC_MEM));
+	// MEM_Stage_Reg MEM_Stage_Reg(.clk(clk), .rst(rst),
+		// .PC_in(PC_MEM), .PC(PC_MEM_Reg));
 
-	MEM_Stage_Reg MEM_Stage_Reg(.clk(clk), .rst(rst),
-		.PC_in(PC_MEM), .PC(PC_MEM_Reg));
-
-	WB_Stage WB_Stage(.clk(clk), .rst(rst), .PC_in(PC_MEM_Reg), .PC(PC_WB));
+	// WB_Stage WB_Stage(.clk(clk), .rst(rst), .PC_in(PC_MEM_Reg), .PC(PC_WB));
 		
 endmodule

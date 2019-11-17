@@ -73,7 +73,7 @@ module ConditionalCheck (
                 tempCondition <= z & ((n & ~v) | (~n & v));
             end
 
-            `COND_LE : begin
+            `COND_AL : begin
                 tempCondition <= 1'b1;
             end
         endcase

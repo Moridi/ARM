@@ -106,11 +106,10 @@ module ControlUnit(
 				case (s)
 					`S_ONE : begin
 						mem_read_reg = `ENABLE;
-						wb_enable_reg = `DISABLE;
+						wb_enable_reg = `ENABLE;
 					end
 					`S_ZERO : begin
 						mem_write_reg = `ENABLE;
-						wb_enable_reg = `ENABLE;
 					end
 				endcase
 			end
