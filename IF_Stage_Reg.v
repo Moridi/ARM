@@ -3,11 +3,13 @@
 module IF_Stage_Reg (
 	input clk, rst, freeze, flush,
 	input[`ADDRESS_LEN - 1:0] PC_in, Instruction_in,
-	output reg[`INSTRUCTION_LEN - 1:0] PC, Instruction
+	output wire[`ADDRESS_LEN - 1:0] PC, Instruction
 );
-	always @(posedge clk, posedge rst) begin
-		PC <= PC_in;
-		Instruction <= Instruction_in;
-	end
+
+Register #(.WORD_LENGTH(`ADDRESS_LEN)) reg_PC_in(.clk(clk), .rst(rst), 
+		.ld(1'b1), .in(PC_in), .out(PC));
+
+Register #(.WORD_LENGTH(`ADDRESS_LEN)) reg_Instruction(.clk(clk), .rst(rst), 
+		.ld(1'b1), .in(Instruction_in), .out(Instruction));
 
 endmodule

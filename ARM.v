@@ -12,19 +12,34 @@ module ARM(input clk, rst);
 	assign BranchAddr = `ADDRESS_LEN'b0;
 	assign flush = 1'b0;
 	
-	IF_Stage IF_Stage(
-		.clk(clk), .rst(rst),
-		.freeze(freeze), .Branch_taken(Branch_taken),
-		.BranchAddr(BranchAddr),
-		.PC(PC_IF),
-		.Instruction(Instruction_IF)
-		);
+	// IF_Stage IF_Stage(
+		// .clk(clk), .rst(rst),
+		// .freeze(freeze), .Branch_taken(Branch_taken),
+		// .BranchAddr(BranchAddr),
+		// .PC(PC_IF),
+		// .Instruction(Instruction_IF)
+		// );
 
-	IF_Stage_Reg IF_Stage_Reg(.clk(clk), .rst(rst),
-			.freeze(freeze), .flush(flush),
-			.PC_in(PC_IF), .Instruction_in(Instruction_IF),
-			.PC(PC_IF_Reg), .Instruction(Instruction_IF_Reg));
+	// IF_Stage_Reg IF_Stage_Reg(.clk(clk), .rst(rst),
+			// .freeze(freeze), .flush(flush),
+			// .PC_in(PC_IF), .Instruction_in(Instruction_IF),
+			// .PC(PC_IF_Reg), .Instruction(Instruction_IF_Reg));
 
+	
+	IF_Stage_Module IF_Stage_Module(
+		// inputs:
+			.clk(clk), .rst(rst),
+			.freeze_in(freeze),
+			.Branch_taken_in(Branch_taken),
+			.flush_in(flush),
+			.BranchAddr_in(BranchAddr),
+
+		//outputs from reg:
+			.PC_out(PC_IF_Reg),
+			.Instruction_out(Instruction_IF_Reg)
+	);
+			
+			
 	// ID Stage
 	wire two_src;
 	wire [`REG_ADDRESS_LEN - 1:0] reg_file_second_src_out;

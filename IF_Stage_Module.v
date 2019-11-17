@@ -6,7 +6,7 @@ module IF_Stage_Module (
 	input[`ADDRESS_LEN - 1:0] BranchAddr_in,
 
     //outputs from reg:
-    output reg [`INSTRUCTION_LEN - 1:0] PC_out, Instruction_out
+    output wire [`INSTRUCTION_LEN - 1:0] PC_out, Instruction_out
 );
 	wire [`ADDRESS_LEN - 1:0] PC_middle;
 	wire [`INSTRUCTION_LEN - 1:0] Instruction_middle;
