@@ -13,7 +13,7 @@ module Val2Generator(
 
     integer i;
     always @(*) begin
-        val2_out_temp = {12'b0, shift_operand};
+        val2_out_temp = {20'b0, shift_operand};
 
         if (is_mem_command == `DISABLE) begin
 

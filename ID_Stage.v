@@ -95,7 +95,7 @@ module ID_Stage(
 			 .sel_second(control_unit_mux_enable),
 			 .out(control_unit_mux_out));
 	
-	assign {execute_command_out, mem_read_en_out, mem_write_en_out, wb_enable_out, immediate_out,
+	assign {execute_command_out, mem_read_en_out, mem_write_en_out, immediate_out, wb_enable_out,
 		branch_taken_out, status_write_enable_out} = control_unit_mux_out;
 	
 	assign PC = PC_in;

@@ -38,10 +38,10 @@ module InstructionMemory(clk, rst, address, WriteData, MemRead, MemWrite, ReadDa
 					{4'b1110, 2'b01, 1'b0, 4'b0100,
 					1'b0, 4'b1010, 4'b0101, 12'b010000000000};	
 					
-			// Load Data[2059] to R7
+			// Load Data[1035] to R7
 			{data[20], data[21], data[22], data[23]} =
 					{4'b1110, 2'b01, 1'b0, 4'b0100,
-					1'b1, 4'b1010, 4'b0111, 12'b100000000001};
+					1'b1, 4'b1010, 4'b0111, 12'b010000000001};
 
 			
 			// data[4] <= 8'b11000000;

@@ -43,14 +43,9 @@ module ARM(input clk, rst);
 	wire [`SIGNED_IMMEDIATE_LEN - 1:0] signed_immediate_ID_out;
 	wire [`SHIFT_OPERAND_LEN - 1:0] shift_operand_ID_out;
 	
-	wire [`REGISTER_LEN - 1:0] reg_file_wb_data;
-	wire [`REG_ADDRESS_LEN - 1:0] reg_file_wb_address;
-	wire reg_file_wb_en;
-		
-	// @TODO: Remove them.
-	assign reg_file_wb_en = 1'b0;
-	assign reg_file_wb_data = 13;
-	assign reg_file_wb_address = 7;
+	wire wb_enable_WB_out;	
+	wire [`REG_ADDRESS_LEN - 1:0] wb_dest_WB_out;
+	wire [`REGISTER_LEN - 1:0] wb_value_WB;
 				
 	ID_Stage_Module ID_Stage_Module(
 		// Inputs:
@@ -58,9 +53,9 @@ module ARM(input clk, rst);
 			.Instruction_in(Instruction_IF),
 
 		// Register file inputs:
-			.reg_file_wb_data(reg_file_wb_data),
-			.reg_file_wb_address(reg_file_wb_address),
-			.reg_file_wb_en(reg_file_wb_en),
+			.reg_file_wb_data(wb_value_WB),
+			.reg_file_wb_address(wb_dest_WB_out),
+			.reg_file_wb_en(wb_enable_WB_out),
 
 		// Wired Outputs:
 			.two_src_out(two_ID_out),
@@ -153,5 +148,24 @@ module ARM(input clk, rst);
 			.dest_hazard_in(dest_hazard_MEM_out)
 	);
 
+	// ########## WB Stage ##########		
+	WB_Stage WB_Stage(
+		// inputs:
+			.clk(clk),
+			.rst(rst),
+			.mem_read_enable(mem_r_en_MEM_out),
+			.wb_enable_in(wb_en_MEM_out),
+			
+			.alu_result(alu_res_MEM_out),
+			.data_memory(mem_res_MEM_out),
+			.wb_dest_in(dest_MEM_out),
+		
+		// outputs:
+			.wb_enable_out(wb_enable_WB_out),
+			
+			.wb_dest_out(wb_dest_WB_out),
+			.wb_value(wb_value_WB)
+	);
+	
 
 endmodule
