@@ -8,8 +8,8 @@ module Memory(clk, rst, address, WriteData, MemRead, MemWrite, ReadData);
 	
 	integer counter = 0;
 
-	reg[`INSTRUCTION_MEM_LEN - 1:0] data[0:`INSTRUCTION_MEM_SIZE - 1];
-	wire [`ADDRESS_LEN - 1:0] address4k = {address[`ADDRESS_LEN - 1:2], 2'b0} - 1024;
+	reg[`DATA_MEMORY_LEN - 1:0] data[0:`DATA_MEMORY_SIZE - 1];
+	wire [`ADDRESS_LEN - 1:0] address4k = {address[`ADDRESS_LEN - 1:2], 2'b0} - `ADDRESS_LEN'd1024;
 	
 	wire [`ADDRESS_LEN - 1:0] address4k_p1 = {address4k[`ADDRESS_LEN - 1:2], 2'b01}; // address4k + 1
 	wire [`ADDRESS_LEN - 1:0] address4k_p2 = {address4k[`ADDRESS_LEN - 1:2], 2'b10}; // address4k + 2

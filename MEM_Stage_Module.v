@@ -45,6 +45,7 @@ module MEM_Stage_Module(
     );
 
     MEM_Stage_Reg mem_stage_reg(
+			.clk(clk), .rst(rst),
         //inputs:
             .wb_en_in(wb_en_middle),
             .mem_r_en_in(mem_r_en_middle),

@@ -8,12 +8,7 @@ module ARM(input clk, rst);
 	wire[`ADDRESS_LEN - 1:0] branch_address;
 	wire[`ADDRESS_LEN - 1:0] PC_IF, PC_ID;
 								
-	wire[`INSTRUCTION_LEN - 1:0] Instruction_IF, Instruction_IF_
-	
-	
-	
-	
-	;
+	wire[`INSTRUCTION_LEN - 1:0] Instruction_IF;
 	
 	assign Branch_taken = 1'b0;
 	assign freeze = 1'b0;
@@ -30,7 +25,7 @@ module ARM(input clk, rst);
 
 		//outputs from reg:
 			.PC_out(PC_IF),
-			.Instruction_out(Instruction_IF_Reg)
+			.Instruction_out(Instruction_IF)
 	);
 			
 			
@@ -60,7 +55,7 @@ module ARM(input clk, rst);
 	ID_Stage_Module ID_Stage_Module(
 		// Inputs:
 			.clk(clk), .rst(rst), .PC_in(PC_IF),
-			.Instruction_in(Instruction_IF_Reg),
+			.Instruction_in(Instruction_IF),
 
 		// Register file inputs:
 			.reg_file_wb_data(reg_file_wb_data),
