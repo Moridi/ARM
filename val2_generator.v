@@ -17,7 +17,7 @@ module Val2Generator(
 
         if (is_mem_command == `DISABLE) begin
 
-            if (immd == 1'b0) begin
+            if (immd == 1'b1) begin
                 for (i = 0; i < shift_operand[11:8]; i = i + 1) begin
                     val2_out_temp = {val2_out[1], val2_out[0], val2_out[31:2]}; 
                 end
