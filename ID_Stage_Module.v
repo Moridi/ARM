@@ -10,11 +10,11 @@ module ID_Stage_Module(
 	// Register file inputs:
 		input [`REGISTER_LEN - 1:0] reg_file_wb_data,
 		input [`REG_ADDRESS_LEN - 1:0] reg_file_wb_address,
-		input reg_file_wb_en,	
+		input reg_file_wb_en, hazard,
 			
 	// outputs from Stage:
 		output wire two_src_out,
-		output wire [`REG_ADDRESS_LEN - 1:0] reg_file_second_src_out,
+		output wire [`REG_ADDRESS_LEN - 1:0] reg_file_second_src_out, reg_file_first_src_out,
 	
 	// outputs from Reg:
 		output wire [`ADDRESS_LEN - 1:0] PC_out,
@@ -49,6 +49,7 @@ module ID_Stage_Module(
 			.reg_file_wb_data(reg_file_wb_data),
 			.reg_file_wb_address(reg_file_wb_address),
 			.reg_file_wb_en(reg_file_wb_en),
+			.hazard(hazard),
 		
 		// outputs to Reg:
 			.PC(PC_middle),			
@@ -67,7 +68,8 @@ module ID_Stage_Module(
 			
 		// outputs to top-module:
 			.two_src(two_src_out),
-			.reg_file_second_src_out(reg_file_second_src_out)
+			.reg_file_second_src_out(reg_file_second_src_out),
+			.reg_file_first_src_out(reg_file_first_src_out)
 		);
 		
 	ID_Stage_Reg ID_Stage_Reg(

@@ -8,7 +8,7 @@ module ID_Stage(
 	
 	input [`REGISTER_LEN - 1:0] reg_file_wb_data,
 	input [`REG_ADDRESS_LEN - 1:0] reg_file_wb_address,
-	input reg_file_wb_en,
+	input reg_file_wb_en, hazard,
 		
 	output[`ADDRESS_LEN - 1:0] PC,
 	output mem_read_en_out, mem_write_en_out,
@@ -22,7 +22,7 @@ module ID_Stage(
 	output [`SIGNED_IMMEDIATE_LEN - 1:0] signed_immediate,
 	output [`SHIFT_OPERAND_LEN - 1:0] shift_operand,
 	
-	output wire [`REG_ADDRESS_LEN - 1:0] reg_file_second_src_out
+	output wire [`REG_ADDRESS_LEN - 1:0] reg_file_second_src_out, reg_file_first_src_out
 );
 
 	wire[`EXECUTE_COMMAND_LEN - 1 : 0] execute_command;
@@ -36,9 +36,6 @@ module ID_Stage(
 
 	wire[3:0] status_register;
 	assign status_register = 4'b0011;
-	
-	wire hazard;
-	assign hazard = 1'b0;
 	
 	// Number of control signals = 7
 	wire[`EXECUTE_COMMAND_LEN + 7 - 1 : 0] control_unit_mux_in, control_unit_mux_out;
@@ -62,6 +59,8 @@ module ID_Stage(
 			.out(reg_file_src2));
 	
 	assign reg_file_second_src_out = reg_file_src2;
+	assign reg_file_first_src_out = reg_file_src1;
+
 	assign reg_file_src1 = Instruction_in[19:16];
 	
 	RegisterFile register_file(
