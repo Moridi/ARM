@@ -2,7 +2,9 @@
 
 module ARM(input clk, rst);
 
+	// ##############################				
 	// ########## IF Stage ##########
+	// ##############################				
 
 	wire freeze, Branch_taken, flush;
 	wire[`ADDRESS_LEN - 1:0] branch_address;
@@ -29,7 +31,9 @@ module ARM(input clk, rst);
 	);
 			
 			
+	// ##############################				
 	// ########## ID Stage ##########
+	// ##############################				
 	wire two_src;
 	wire [`REG_ADDRESS_LEN - 1:0] reg_file_second_src_out;
 	
@@ -77,7 +81,10 @@ module ARM(input clk, rst);
 			.shift_operand_out(shift_operand_ID_out)
 		);
 
+	// ###############################				
 	// ########## EXE Stage ##########
+	// ###############################	
+
     wire wb_enable_EXE_out, mem_read_EXE_out, mem_write_EXE_out;
 	wire [`REGISTER_LEN - 1:0] alu_res_EXE_out, val_Rm_EXE_out;
 	wire [`REG_ADDRESS_LEN - 1:0] dest_EXE_out;
@@ -120,8 +127,10 @@ module ARM(input clk, rst);
 			.branch_address_out(branch_address)
 	);
 	
-	
+	// ##############################				
 	// ########## MEM Stage ##########
+	// ##############################				
+
 	wire wb_en_MEM_out, mem_r_en_MEM_out;
 	wire [`REGISTER_LEN - 1:0] alu_res_MEM_out, mem_res_MEM_out;
 	wire [`REG_ADDRESS_LEN - 1:0] dest_MEM_out;
@@ -148,7 +157,10 @@ module ARM(input clk, rst);
 			.dest_hazard_in(dest_hazard_MEM_out)
 	);
 
+	// ##############################		
 	// ########## WB Stage ##########		
+	// ##############################
+					
 	WB_Stage WB_Stage(
 		// inputs:
 			.clk(clk),
