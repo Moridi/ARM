@@ -7,9 +7,9 @@ module IF_Stage_Reg (
 );
 
 Register #(.WORD_LENGTH(`ADDRESS_LEN)) reg_PC_in(.clk(clk), .rst(rst), 
-		.ld(1'b1), .in(PC_in), .out(PC));
+		.ld(~freeze), .in(PC_in), .out(PC));
 
 Register #(.WORD_LENGTH(`ADDRESS_LEN)) reg_Instruction(.clk(clk), .rst(rst), 
-		.ld(1'b1), .in(Instruction_in), .out(Instruction));
+		.ld(~freeze), .in(Instruction_in), .out(Instruction));
 
 endmodule

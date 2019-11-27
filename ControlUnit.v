@@ -102,7 +102,8 @@ module ControlUnit(
 				endcase
 			end
 
-			`MEMORY_TYPE : begin		
+			`MEMORY_TYPE : begin
+				execute_command_reg = `ADD_EXE;
 				case (s)
 					`S_ONE : begin
 						mem_read_reg = `ENABLE;

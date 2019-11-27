@@ -8,7 +8,7 @@ module WB_Stage(
 	
 	input [`REGISTER_LEN - 1:0] alu_result,
 	input [`REGISTER_LEN - 1:0] data_memory,
-	input [`REGISTER_LEN - 1:0] wb_dest_in,
+	input [`REG_ADDRESS_LEN - 1:0] wb_dest_in,
 	
 	output wire wb_enable_out,
 	

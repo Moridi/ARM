@@ -2,23 +2,25 @@
 
 module ARM(input clk, rst);
 
+	// ##############################				
 	// ########## IF Stage ##########
+	// ##############################				
 
-	wire freeze, Branch_taken, flush;
+	wire hazard_detected, Branch_taken, flush;
 	wire[`ADDRESS_LEN - 1:0] branch_address;
 	wire[`ADDRESS_LEN - 1:0] PC_IF, PC_ID;
 								
 	wire[`INSTRUCTION_LEN - 1:0] Instruction_IF;
 	
 	assign Branch_taken = 1'b0;
-	assign freeze = 1'b0;
+	// assign freeze = 1'b0;
 	assign branch_address = `ADDRESS_LEN'b0;
 	assign flush = 1'b0;
 	
 	IF_Stage_Module IF_Stage_Module(
 		// inputs:
 			.clk(clk), .rst(rst),
-			.freeze_in(freeze),
+			.freeze_in(hazard_detected),
 			.Branch_taken_in(Branch_taken),
 			.flush_in(flush),
 			.BranchAddr_in(branch_address),
@@ -29,9 +31,12 @@ module ARM(input clk, rst);
 	);
 			
 			
+	// ##############################				
 	// ########## ID Stage ##########
-	wire two_src;
-	wire [`REG_ADDRESS_LEN - 1:0] reg_file_second_src_out;
+	// ##############################				
+	wire ID_two_src;
+	wire [`REG_ADDRESS_LEN - 1:0] reg_file_second_src_out, reg_file_first_src_out;
+	wire [3:0] status_reg_ID_out;
 	
 	wire mem_read_ID_out, mem_write_ID_out,
 		wb_enable_ID_out, immediate_ID_out,
@@ -46,11 +51,14 @@ module ARM(input clk, rst);
 	wire wb_enable_WB_out;	
 	wire [`REG_ADDRESS_LEN - 1:0] wb_dest_WB_out;
 	wire [`REGISTER_LEN - 1:0] wb_value_WB;
+	wire[3:0] status_reg_ID_in;
 				
 	ID_Stage_Module ID_Stage_Module(
 		// Inputs:
 			.clk(clk), .rst(rst), .PC_in(PC_IF),
 			.Instruction_in(Instruction_IF),
+			.status_reg_in(status_reg_ID_in),
+			.hazard(hazard_detected),
 
 		// Register file inputs:
 			.reg_file_wb_data(wb_value_WB),
@@ -58,8 +66,9 @@ module ARM(input clk, rst);
 			.reg_file_wb_en(wb_enable_WB_out),
 
 		// Wired Outputs:
-			.two_src_out(two_ID_out),
+			.two_src_out(ID_two_src),
 			.reg_file_second_src_out(reg_file_second_src_out),
+			.reg_file_first_src_out(reg_file_first_src_out),
 
 		// Registered Outputs:
 			.PC_out(PC_ID),
@@ -74,18 +83,22 @@ module ARM(input clk, rst);
 			.reg_file_out2(reg_file_ID_out2),
 			.dest_reg_out(dest_reg_ID_out),
 			.signed_immediate_out(signed_immediate_ID_out),
-			.shift_operand_out(shift_operand_ID_out)
+			.shift_operand_out(shift_operand_ID_out),
+			.status_reg_out(status_reg_ID_out)
 		);
 
+	// ###############################				
 	// ########## EXE Stage ##########
+	// ###############################	
+
     wire wb_enable_EXE_out, mem_read_EXE_out, mem_write_EXE_out;
 	wire [`REGISTER_LEN - 1:0] alu_res_EXE_out, val_Rm_EXE_out;
 	wire [`REG_ADDRESS_LEN - 1:0] dest_EXE_out;
 
     wire wb_en_hazard_EXE_out;
     wire [`REG_ADDRESS_LEN - 1:0] dest_hazard_EXE_out;
-	wire status_w_en_out, branch_taken_out;
-	wire [3:0] statusRegister_out;
+	wire status_w_en_EXE_out, branch_taken_out;
+	wire [3:0] status_reg_EXE_out;
 			
 	EX_Stage_Module EX_Stage_Module(
 		//inputs to main moduel:
@@ -102,6 +115,7 @@ module ARM(input clk, rst);
 			.dest_in(dest_reg_ID_out),
 			.signed_immd_24(signed_immediate_ID_out),
 			.shift_operand(shift_operand_ID_out),
+			.status_reg_in(status_reg_ID_out),
 
 		// outputs from Reg:
 			.wb_en_out(wb_enable_EXE_out),
@@ -114,14 +128,17 @@ module ARM(input clk, rst);
 		//outputs from main module:
 			.wb_en_hazard_in(wb_en_hazard_EXE_out),
 			.dest_hazard_in(dest_hazard_EXE_out),
-			.status_w_en_out(status_w_en_out),
+			.status_w_en_out(status_w_en_EXE_out),
 			.branch_taken_out(branch_taken_out),
-			.statusRegister_out(statusRegister_out),
+			.statusRegister_out(status_reg_EXE_out),
 			.branch_address_out(branch_address)
 	);
 	
 	
+	// ##############################				
 	// ########## MEM Stage ##########
+	// ##############################				
+
 	wire wb_en_MEM_out, mem_r_en_MEM_out;
 	wire [`REGISTER_LEN - 1:0] alu_res_MEM_out, mem_res_MEM_out;
 	wire [`REG_ADDRESS_LEN - 1:0] dest_MEM_out;
@@ -148,7 +165,10 @@ module ARM(input clk, rst);
 			.dest_hazard_in(dest_hazard_MEM_out)
 	);
 
+	// ##############################		
 	// ########## WB Stage ##########		
+	// ##############################
+
 	WB_Stage WB_Stage(
 		// inputs:
 			.clk(clk),
@@ -166,6 +186,31 @@ module ARM(input clk, rst);
 			.wb_dest_out(wb_dest_WB_out),
 			.wb_value(wb_value_WB)
 	);
+
+	// ##############################
+	// #### top module elements #####
+	// ##############################
+
+	Status_Register Status_Register(
+    .clk(clk), .rst(rst),
+	.ld(status_w_en_EXE_out),
+	.data_out(status_reg_ID_in),
+    .data_in(status_reg_EXE_out)
+	);
 	
+	Hazard_Detection_Unit hazard_detection_unit(
+		//inputs:
+			.have_two_src(ID_two_src),
+			.src1_address(reg_file_first_src_out),
+			.src2_address(reg_file_second_src_out),
+
+			.exe_wb_dest(dest_hazard_EXE_out),
+			.exe_wb_en(wb_en_hazard_EXE_out),
+			
+			.mem_wb_dest(dest_hazard_MEM_out),
+			.mem_wb_en(wb_en_hazard_MEM_out),
+		// outputs:
+    		.hazard_detected(hazard_detected)
+	);
 
 endmodule

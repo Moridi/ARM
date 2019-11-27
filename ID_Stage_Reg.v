@@ -17,6 +17,7 @@ module ID_Stage_Reg(
 	input [`REG_ADDRESS_LEN - 1:0] dest_reg_in,
 	input [`SIGNED_IMMEDIATE_LEN - 1:0] signed_immediate_in,
 	input [`SHIFT_OPERAND_LEN - 1:0] shift_operand_in,
+	input [3:0] status_reg_in,
 
 	output wire mem_read_en_out,
 	output wire mem_write_en_out,
@@ -30,7 +31,8 @@ module ID_Stage_Reg(
 	output wire [`REGISTER_LEN - 1:0] reg_file_out2,
 	output wire [`REG_ADDRESS_LEN - 1:0] dest_reg_out,
 	output wire [`SIGNED_IMMEDIATE_LEN - 1:0] signed_immediate_out,
-	output wire [`SHIFT_OPERAND_LEN - 1:0] shift_operand_out
+	output wire [`SHIFT_OPERAND_LEN - 1:0] shift_operand_out,
+	output wire [3:0] status_reg_out
 );
 
 Register #(.WORD_LENGTH(`ADDRESS_LEN)) reg_PC_in(.clk(clk), .rst(rst), 
@@ -72,4 +74,7 @@ Register #(.WORD_LENGTH(`SIGNED_IMMEDIATE_LEN)) reg_signed_immediate_in(.clk(clk
 Register #(.WORD_LENGTH(`SHIFT_OPERAND_LEN)) reg_shift_operand_in(.clk(clk), .rst(rst), 
 		.ld(1'b1), .in(shift_operand_in), .out(shift_operand_out));
 
+Register #(.WORD_LENGTH(3)) reg_status_reg_in(.clk(clk), .rst(rst), 
+		.ld(1'b1), .in(status_reg_in), .out(status_reg_out));
+		
 endmodule

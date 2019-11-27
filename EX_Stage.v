@@ -10,6 +10,7 @@ module EX_Stage(
 	input [`REG_ADDRESS_LEN - 1:0] dest_in,
 	input [23:0] signed_immd_24,
 	input [11:0] shift_operand,
+	input [3:0] status_reg_in,
 
 	// output[`ADDRESS_LEN - 1:0] PC_out,
 	output wb_en_out, mem_r_en_out, mem_w_en_out, status_w_en_out, branch_taken_out,
@@ -43,7 +44,7 @@ module EX_Stage(
 	);
 
 	// @TODO: Check the cin port
-	ALU alu(.alu_in1(val_Rn), .alu_in2(val2), .alu_command(exe_cmd), .cin(1'b0),
+	ALU alu(.alu_in1(val_Rn), .alu_in2(val2), .alu_command(exe_cmd), .cin(status_reg_in[2]),
 			.alu_out(alu_res), .statusRegister(statusRegister)
 	);
 
