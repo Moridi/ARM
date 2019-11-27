@@ -31,7 +31,7 @@ module ARM(input clk, rst);
 	// ##############################				
 	// ########## ID Stage ##########
 	// ##############################				
-	wire ID_two_src;
+	wire ID_two_src, ignore_hazard_ID_out;
 	wire [`REG_ADDRESS_LEN - 1:0] reg_file_second_src_out, reg_file_first_src_out;
 	wire [3:0] status_reg_ID_out;
 	
@@ -67,6 +67,7 @@ module ARM(input clk, rst);
 			.two_src_out(ID_two_src),
 			.reg_file_second_src_out(reg_file_second_src_out),
 			.reg_file_first_src_out(reg_file_first_src_out),
+			.ignore_hazard_out(ignore_hazard_ID_out),
 
 		// Registered Outputs:
 			.PC_out(PC_ID),
@@ -201,6 +202,7 @@ module ARM(input clk, rst);
 			.have_two_src(ID_two_src),
 			.src1_address(reg_file_first_src_out),
 			.src2_address(reg_file_second_src_out),
+			.ignore_hazard(ignore_hazard_ID_out),
 
 			.exe_wb_dest(dest_hazard_EXE_out),
 			.exe_wb_en(wb_en_hazard_EXE_out),
