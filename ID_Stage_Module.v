@@ -4,6 +4,8 @@ module ID_Stage_Module(
 	// inputs to main module:
 		input clk,
 		input rst,
+		input flush,
+		
 		input[`ADDRESS_LEN - 1:0] PC_in,
 		input [`INSTRUCTION_LEN - 1 : 0] Instruction_in,
 		input [3:0] status_reg_in,
@@ -78,6 +80,7 @@ module ID_Stage_Module(
 	ID_Stage_Reg ID_Stage_Reg(
 		.clk(clk),
 		.rst(rst),
+		.flush(flush),
 	
 		.PC_in(PC_middle),			
 		.mem_read_en_in(mem_read_en_middle),

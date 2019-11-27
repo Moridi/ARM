@@ -12,16 +12,14 @@ module ARM(input clk, rst);
 								
 	wire[`INSTRUCTION_LEN - 1:0] Instruction_IF;
 	
-	assign Branch_taken = 1'b0;
-	// assign freeze = 1'b0;
-	assign branch_address = `ADDRESS_LEN'b0;
-	assign flush = 1'b0;
+
+	assign flush = branch_taken_EXE_out;
 	
 	IF_Stage_Module IF_Stage_Module(
 		// inputs:
 			.clk(clk), .rst(rst),
 			.freeze_in(hazard_detected),
-			.Branch_taken_in(Branch_taken),
+			.Branch_taken_in(branch_taken_EXE_out),
 			.flush_in(flush),
 			.BranchAddr_in(branch_address),
 
@@ -59,6 +57,7 @@ module ARM(input clk, rst);
 			.Instruction_in(Instruction_IF),
 			.status_reg_in(status_reg_ID_in),
 			.hazard(hazard_detected),
+			.flush(flush),
 
 		// Register file inputs:
 			.reg_file_wb_data(wb_value_WB),
@@ -97,7 +96,7 @@ module ARM(input clk, rst);
 
     wire wb_en_hazard_EXE_out;
     wire [`REG_ADDRESS_LEN - 1:0] dest_hazard_EXE_out;
-	wire status_w_en_EXE_out, branch_taken_out;
+	wire status_w_en_EXE_out, branch_taken_EXE_out;
 	wire [3:0] status_reg_EXE_out;
 			
 	EX_Stage_Module EX_Stage_Module(
@@ -129,7 +128,7 @@ module ARM(input clk, rst);
 			.wb_en_hazard_in(wb_en_hazard_EXE_out),
 			.dest_hazard_in(dest_hazard_EXE_out),
 			.status_w_en_out(status_w_en_EXE_out),
-			.branch_taken_out(branch_taken_out),
+			.branch_taken_out(branch_taken_EXE_out),
 			.statusRegister_out(status_reg_EXE_out),
 			.branch_address_out(branch_address)
 	);
