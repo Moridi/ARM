@@ -6,13 +6,13 @@ module ARM(input clk, rst);
 	// ########## IF Stage ##########
 	// ##############################				
 
-	wire hazard_detected, Branch_taken, flush;
+	wire branch_taken_EXE_out;
+	wire hazard_detected, flush;
 	wire[`ADDRESS_LEN - 1:0] branch_address;
 	wire[`ADDRESS_LEN - 1:0] PC_IF, PC_ID;
 								
 	wire[`INSTRUCTION_LEN - 1:0] Instruction_IF;
 	
-
 	assign flush = branch_taken_EXE_out;
 	
 	IF_Stage_Module IF_Stage_Module(
@@ -26,8 +26,7 @@ module ARM(input clk, rst);
 		//outputs from reg:
 			.PC_out(PC_IF),
 			.Instruction_out(Instruction_IF)
-	);
-			
+	);	
 			
 	// ##############################				
 	// ########## ID Stage ##########
@@ -96,7 +95,7 @@ module ARM(input clk, rst);
 
     wire wb_en_hazard_EXE_out;
     wire [`REG_ADDRESS_LEN - 1:0] dest_hazard_EXE_out;
-	wire status_w_en_EXE_out, branch_taken_EXE_out;
+	wire status_w_en_EXE_out;
 	wire [3:0] status_reg_EXE_out;
 			
 	EX_Stage_Module EX_Stage_Module(

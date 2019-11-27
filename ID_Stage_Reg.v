@@ -76,7 +76,7 @@ Register #(.WORD_LENGTH(`SIGNED_IMMEDIATE_LEN)) reg_signed_immediate_in(.clk(clk
 Register #(.WORD_LENGTH(`SHIFT_OPERAND_LEN)) reg_shift_operand_in(.clk(clk), .rst(local_rst), 
 		.ld(1'b1), .in(shift_operand_in), .out(shift_operand_out));
 
-Register #(.WORD_LENGTH(3)) reg_status_reg_in(.clk(clk), .rst(local_rst), 
+Register #(.WORD_LENGTH(4)) reg_status_reg_in(.clk(clk), .rst(local_rst), 
 		.ld(1'b1), .in(status_reg_in), .out(status_reg_out));
 		
 endmodule
