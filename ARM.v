@@ -134,7 +134,7 @@ module ARM(input clk, rst);
 			.branch_address_out(branch_address)
 	);
 	
-	
+
 	// ##############################				
 	// ########## MEM Stage ##########
 	// ##############################				
