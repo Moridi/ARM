@@ -6,20 +6,20 @@ module ARM(input clk, rst);
 	// ########## IF Stage ##########
 	// ##############################				
 
-	wire branch_taken_EXE_out;
+	wire branch_taken_EXE_out, branch_taken_ID_out;
 	wire hazard_detected, flush;
 	wire[`ADDRESS_LEN - 1:0] branch_address;
 	wire[`ADDRESS_LEN - 1:0] PC_IF, PC_ID;
 								
 	wire[`INSTRUCTION_LEN - 1:0] Instruction_IF;
 	
-	assign flush = branch_taken_EXE_out;
+	assign flush = branch_taken_ID_out;
 	
 	IF_Stage_Module IF_Stage_Module(
 		// inputs:
 			.clk(clk), .rst(rst),
 			.freeze_in(hazard_detected),
-			.Branch_taken_in(branch_taken_EXE_out),
+			.Branch_taken_in(branch_taken_ID_out),
 			.flush_in(flush),
 			.BranchAddr_in(branch_address),
 
@@ -37,7 +37,7 @@ module ARM(input clk, rst);
 	
 	wire mem_read_ID_out, mem_write_ID_out,
 		wb_enable_ID_out, immediate_ID_out,
-		branch_taken_ID_out, status_write_enable_ID_out;
+		status_write_enable_ID_out;
 		
 	wire [`EXECUTE_COMMAND_LEN - 1 : 0] execute_command_ID_out;
 	wire [`REGISTER_LEN - 1:0] reg_file_ID_out1, reg_file_ID_out2;

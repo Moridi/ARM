@@ -27,7 +27,7 @@ module EX_Stage_Module(
 );
 
 
-	wire wb_en_middle, mem_r_en_middle, mem_w_en_middle;
+	wire wb_en_middle, mem_r_en_middle, mem_w_en_middle, branch_taken_middle;
 	wire [`REGISTER_LEN - 1:0] alu_res_middle, val_Rm_middle;
 	wire [`REG_ADDRESS_LEN - 1:0] dest_middle;
 
@@ -63,7 +63,7 @@ module EX_Stage_Module(
 
         // outputs:
             .status_w_en_out(status_w_en_out),
-            .branch_taken_out(branch_taken_out),
+            .branch_taken_out(branch_taken_middle),
             .statusRegister(statusRegister_out),
             .branch_address(branch_address_out)
 	);
@@ -78,13 +78,16 @@ module EX_Stage_Module(
 	        .alu_res_in(alu_res_middle),
             .val_Rm_in(val_Rm_middle),
 	        .dest_in(dest_middle),
+			.branch_taken_in(branch_taken_middle),
+			
         // outputs:
             .wb_en_out(wb_en_out),
             .mem_r_en_out(mem_r_en_out),
             .mem_w_en_out(mem_w_en_out),
             .alu_res_out(alu_res_out),
             .val_Rm_out(val_Rm_out),
-            .dest_out(dest_out)
+            .dest_out(dest_out),
+			.branch_taken_out(branch_taken_out)
         );
 	
 endmodule
