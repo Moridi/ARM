@@ -36,46 +36,46 @@ module ID_Stage_Reg(
 	output wire [3:0] status_reg_out
 );
 
-Register #(.WORD_LENGTH(`ADDRESS_LEN)) reg_PC_in(.clk(clk), .rst(rst), 
-		.ld(1'b1), .in(PC_in & ~flush), .out(PC_out));
+Register_Flush #(.WORD_LENGTH(`ADDRESS_LEN)) reg_PC_in(.clk(clk), .rst(rst), .flush(flush), 
+		.ld(1'b1), .in(PC_in), .out(PC_out));
 
-Register #(.WORD_LENGTH(1)) reg_mem_read_en_in(.clk(clk), .rst(rst), 
-		.ld(1'b1), .in(mem_read_en_in & ~flush), .out(mem_read_en_out));
+Register_Flush #(.WORD_LENGTH(1)) reg_mem_read_en_in(.clk(clk), .rst(rst), .flush(flush), 
+		.ld(1'b1), .in(mem_read_en_in), .out(mem_read_en_out));
 
-Register #(.WORD_LENGTH(1)) reg_mem_write_en_in(.clk(clk), .rst(rst), 
-		.ld(1'b1), .in(mem_write_en_in & ~flush), .out(mem_write_en_out));
+Register_Flush #(.WORD_LENGTH(1)) reg_mem_write_en_in(.clk(clk), .rst(rst), .flush(flush), 
+		.ld(1'b1), .in(mem_write_en_in), .out(mem_write_en_out));
 
-Register #(.WORD_LENGTH(1)) reg_wb_enable_in(.clk(clk), .rst(rst), 
-		.ld(1'b1), .in(wb_enable_in & ~flush), .out(wb_enable_out));
+Register_Flush #(.WORD_LENGTH(1)) reg_wb_enable_in(.clk(clk), .rst(rst), .flush(flush), 
+		.ld(1'b1), .in(wb_enable_in), .out(wb_enable_out));
 
-Register #(.WORD_LENGTH(1)) reg_immediate_in(.clk(clk), .rst(rst), 
-		.ld(1'b1), .in(immediate_in & ~flush), .out(immediate_out));
+Register_Flush #(.WORD_LENGTH(1)) reg_immediate_in(.clk(clk), .rst(rst), .flush(flush), 
+		.ld(1'b1), .in(immediate_in), .out(immediate_out));
 
-Register #(.WORD_LENGTH(1)) reg_branch_taken_in(.clk(clk), .rst(rst), 
-		.ld(1'b1), .in(branch_taken_in & ~flush), .out(branch_taken_out));
+Register_Flush #(.WORD_LENGTH(1)) reg_branch_taken_in(.clk(clk), .rst(rst), .flush(flush), 
+		.ld(1'b1), .in(branch_taken_in), .out(branch_taken_out));
 
-Register #(.WORD_LENGTH(1)) reg_status_write_enable_in(.clk(clk), .rst(rst), 
-		.ld(1'b1), .in(status_write_enable_in & ~flush), .out(status_write_enable_out));
+Register_Flush #(.WORD_LENGTH(1)) reg_status_write_enable_in(.clk(clk), .rst(rst), .flush(flush), 
+		.ld(1'b1), .in(status_write_enable_in), .out(status_write_enable_out));
 
-Register #(.WORD_LENGTH(`EXECUTE_COMMAND_LEN)) reg_execute_command_in(.clk(clk), .rst(rst), 
-		.ld(1'b1), .in(execute_command_in & ~flush), .out(execute_command_out));
+Register_Flush #(.WORD_LENGTH(`EXECUTE_COMMAND_LEN)) reg_execute_command_in(.clk(clk), .rst(rst), .flush(flush), 
+		.ld(1'b1), .in(execute_command_in), .out(execute_command_out));
 
-Register #(.WORD_LENGTH(`REGISTER_LEN)) reg_reg_file_in1(.clk(clk), .rst(rst), 
-		.ld(1'b1), .in(reg_file_in1 & ~flush), .out(reg_file_out1));
+Register_Flush #(.WORD_LENGTH(`REGISTER_LEN)) reg_reg_file_in1(.clk(clk), .rst(rst), .flush(flush), 
+		.ld(1'b1), .in(reg_file_in1), .out(reg_file_out1));
 
-Register #(.WORD_LENGTH(`REGISTER_LEN)) reg_reg_file_in2(.clk(clk), .rst(rst), 
-		.ld(1'b1), .in(reg_file_in2 & ~flush), .out(reg_file_out2));
+Register_Flush #(.WORD_LENGTH(`REGISTER_LEN)) reg_reg_file_in2(.clk(clk), .rst(rst), .flush(flush), 
+		.ld(1'b1), .in(reg_file_in2), .out(reg_file_out2));
 
-Register #(.WORD_LENGTH(`REG_ADDRESS_LEN)) reg_dest_reg_in(.clk(clk), .rst(rst), 
-		.ld(1'b1), .in(dest_reg_in & ~flush), .out(dest_reg_out));
+Register_Flush #(.WORD_LENGTH(`REG_ADDRESS_LEN)) reg_dest_reg_in(.clk(clk), .rst(rst), .flush(flush), 
+		.ld(1'b1), .in(dest_reg_in), .out(dest_reg_out));
 
-Register #(.WORD_LENGTH(`SIGNED_IMMEDIATE_LEN)) reg_signed_immediate_in(.clk(clk), .rst(rst), 
-		.ld(1'b1), .in(signed_immediate_in & ~flush), .out(signed_immediate_out));
+Register_Flush #(.WORD_LENGTH(`SIGNED_IMMEDIATE_LEN)) reg_signed_immediate_in(.clk(clk), .rst(rst), .flush(flush), 
+		.ld(1'b1), .in(signed_immediate_in), .out(signed_immediate_out));
 
-Register #(.WORD_LENGTH(`SHIFT_OPERAND_LEN)) reg_shift_operand_in(.clk(clk), .rst(rst), 
-		.ld(1'b1), .in(shift_operand_in & ~flush), .out(shift_operand_out));
+Register_Flush #(.WORD_LENGTH(`SHIFT_OPERAND_LEN)) reg_shift_operand_in(.clk(clk), .rst(rst), .flush(flush), 
+		.ld(1'b1), .in(shift_operand_in), .out(shift_operand_out));
 
-Register #(.WORD_LENGTH(4)) reg_status_reg_in(.clk(clk), .rst(rst), 
-		.ld(1'b1), .in(status_reg_in & ~flush), .out(status_reg_out));
+Register_Flush #(.WORD_LENGTH(4)) reg_status_reg_in(.clk(clk), .rst(rst), .flush(flush), 
+		.ld(1'b1), .in(status_reg_in), .out(status_reg_out));
 		
 endmodule

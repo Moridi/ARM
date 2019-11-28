@@ -35,7 +35,9 @@ module EX_Stage(
 	assign is_mem_command = mem_r_en_in | mem_w_en_in;
 
 	// branch_address = PC_in + signed_immd_24;
-	Adder #(.WORD_LENGTH(`ADDRESS_LEN)) adder(.in1(PC_in), .in2({8'b0, signed_immd_24[23:2], 2'b0}),
+	Adder #(.WORD_LENGTH(`ADDRESS_LEN)) adder(.in1(PC_in), .in2({signed_immd_24[23],
+			signed_immd_24[23], signed_immd_24[23], signed_immd_24[23],
+			signed_immd_24[23], signed_immd_24[23],signed_immd_24, 2'b0}),
 			.out(branch_address)
 	);
 	
