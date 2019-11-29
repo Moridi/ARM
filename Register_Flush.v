@@ -7,7 +7,8 @@ module Register_Flush(clk, rst, flush, ld, in, out);
  
 	always@(posedge clk, posedge rst) 
 	begin
-		if (rst | flush) out <= 0;
+		if (rst) out <= 0;
+		else if (flush) out <= 0;
 		else if (ld) out <= in;
 	end
 	
