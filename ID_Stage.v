@@ -14,7 +14,7 @@ module ID_Stage(
 	output[`ADDRESS_LEN - 1:0] PC,
 	output mem_read_en_out, mem_write_en_out,
 		wb_enable_out, immediate_out,
-		branch_taken_out, status_write_enable_out,
+		branch_taken_out, status_write_enable_out, ignore_hazard_out,
 		
 	output [`EXECUTE_COMMAND_LEN - 1 : 0] execute_command_out,
 	output [`REGISTER_LEN - 1:0] reg_file_out1, reg_file_out2,
@@ -35,8 +35,8 @@ module ID_Stage(
 		branch_taken, status_write_enable,
 		cond_state, control_unit_mux_enable;
 
-	// Number of control signals = 7
-	wire[`EXECUTE_COMMAND_LEN + 7 - 1 : 0] control_unit_mux_in, control_unit_mux_out;
+	// Number of control signals = 6
+	wire[`EXECUTE_COMMAND_LEN + 6 - 1 : 0] control_unit_mux_in, control_unit_mux_out;
 		
 	
 	// Control Unit
@@ -47,7 +47,9 @@ module ID_Stage(
 		.mem_read(mem_read), .mem_write(mem_write),
 		.wb_enable(wb_enable), .immediate(immediate),
 		.branch_taken(branch_taken),
-		.status_write_enable(status_write_enable));
+		.status_write_enable(status_write_enable),
+		.ignore_hazard(ignore_hazard_out)
+	);
 
 		
 	// Register File
@@ -84,10 +86,10 @@ module ID_Stage(
 	
 	assign control_unit_mux_enable = hazard | (~cond_state);
 	
-	// Number of control signals = 7
+	// Number of control signals = 6
 	// @TODO: Check the control_unit_mux_enable
-	 MUX_2_to_1 #(.WORD_LENGTH(`EXECUTE_COMMAND_LEN + 7)) control_unit_mux(
-			 .first(control_unit_mux_in), .second(11'b0),
+	 MUX_2_to_1 #(.WORD_LENGTH(`EXECUTE_COMMAND_LEN + 6)) control_unit_mux(
+			 .first(control_unit_mux_in), .second(10'b0),
 			 .sel_first(~control_unit_mux_enable),
 			 .sel_second(control_unit_mux_enable),
 			 .out(control_unit_mux_out));

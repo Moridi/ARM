@@ -13,8 +13,8 @@ module ConditionalCheck (
 	reg tempCondition;
 	
 	assign condState = tempCondition;
-	
-    always @(cond) begin
+
+    always @(*) begin
 
         case(cond)
             `COND_EQ : begin
@@ -60,7 +60,6 @@ module ConditionalCheck (
             `COND_GE : begin
                 tempCondition <= (n & v) | (~n & ~v);
             end
-
             `COND_LT : begin
                 tempCondition <= (n & ~v) | (~n & v);
             end
