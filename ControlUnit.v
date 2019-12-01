@@ -95,14 +95,14 @@ module ControlUnit(
 
                         `TST :
                             execute_command_reg = `TST_EXE;
-
-                        `LDR : begin 
-                            wb_enable_reg = `ENABLE;
-                            execute_command_reg = `LDR_EXE;
-                        end
-
-                        `STR :
-                            execute_command_reg = `STR_EXE;
+									 
+								default : begin
+									  mem_write_reg = `DISABLE;
+									  mem_read_reg = `DISABLE;
+									  wb_enable_reg = `DISABLE;
+									  branch_taken_reg = `DISABLE;
+									  ignore_hazard_reg = `DISABLE;
+								 end
                 endcase
             end
 
@@ -123,6 +123,9 @@ module ControlUnit(
                 branch_taken_reg = `ENABLE;
                 ignore_hazard_reg = `ENABLE;
             end
+				
+				default:
+					execute_command_reg = 0;
         endcase
         
     end

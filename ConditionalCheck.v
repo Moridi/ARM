@@ -75,6 +75,11 @@ module ConditionalCheck (
             `COND_AL : begin
                 tempCondition <= 1'b1;
             end
+				
+				default: begin
+                tempCondition <= 1'b0;
+            end
+				
         endcase
     end
 endmodule

@@ -2,7 +2,7 @@ module TB();
 
 	reg clk = 1'b0, rst = 1'b0;
 	
-	ARM ARM(.clk(clk), .rst(rst));
+	ARM_Module ARM(.clk(clk), .rst(rst));
 	
 	initial repeat(1000) #100 clk = ~clk;
 	

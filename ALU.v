@@ -13,7 +13,7 @@ module ALU(
     reg v, cout;
     assign statusRegister = {z, cout, n, v};
 
-    assign z = (alu_out == 8'b0 ? 1 : 0);
+    assign z = (alu_out == 8'b0 ? 1'b1 : 1'b0);
     assign n = alu_out[`REGISTER_LEN - 1];
 
     reg [`REGISTER_LEN - 1:0] alu_out_temp;
@@ -73,6 +73,11 @@ module ALU(
                 alu_out_temp	 = 	alu_in1 + alu_in2;
 			`STR_EXE:
                 alu_out_temp	 = 	alu_in1 + alu_in2;
+			default : begin
+					cout = 1'b0;
+					v = 1'b0;
+					alu_out_temp = 0;
+			end
 		endcase
 	end
 

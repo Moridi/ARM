@@ -4,15 +4,11 @@ module InstructionMemory(clk, rst, address, WriteData, MemRead, MemWrite, ReadDa
 	input[`INSTRUCTION_LEN - 1:0] address, WriteData;
 	input clk, rst, MemRead, MemWrite;
 	output reg[`INSTRUCTION_LEN - 1:0] ReadData;
-	integer counter = 0;
 
 	reg[`INSTRUCTION_MEM_LEN - 1:0] data[0:`INSTRUCTION_MEM_SIZE - 1];
 
-	// always @(posedge clk, posedge rst) begin
 	always @(*) begin
 		if (rst) begin
-			//for(counter=16; counter < `INSTRUCTION_MEM_SIZE; counter=counter+1)
-				//data[counter] <= `INSTRUCTION_LEN'b0;
 			data[0] <= 8'b11100000;
 			data[1] <= 8'b00000000;
 			data[2] <= 8'b00000000;

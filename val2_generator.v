@@ -11,7 +11,7 @@ module Val2Generator(
     reg [`REGISTER_LEN - 1:0] val2_out_temp;
     assign val2_out = val2_out_temp;
 
-    integer i;
+    integer i = 0;
     always @(*) begin
 
         if (is_mem_command == `DISABLE) begin
