@@ -102,7 +102,7 @@ module TB();
 
     ////////////////////////    Clock reg       ////////////////////////
 reg         CLOCK_27;               //  27 MHz
-reg         CLOCK_50;               //  50 MHz
+reg         CLOCK_50 = 1'b0;               //  50 MHz
 reg            EXT_CLOCK;               //  External Clock
 ////////////////////////    Push Button     ////////////////////////
 reg    [3:0]    KEY;                    //  Pushbutton[3:0]
