@@ -305,8 +305,7 @@ inout   [35:0]  GPIO_0;                 //  GPIO Connection 0
 inout   [35:0]  GPIO_1;                 //  GPIO Connection 1
 
     wire en_forwarding, rst;
-    // assign en_forwarding = SW[10];
-    assign en_forwarding = 1'b0;
+    assign en_forwarding = SW[10];
     assign rst = SW[13];
 
     // ##############################               
