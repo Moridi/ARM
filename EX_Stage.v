@@ -48,6 +48,7 @@ module EX_Stage(
 
 	// ####### Val2 Generator #######
 	MUX_3_to_1 alu_src2_mux(.first(val_Rm_in), .second(WB_wb_value), .third(MEM_wb_value), .sel(alu_mux_sel_src2), .out(alu_mux_src2));
+	
 	Val2Generator val2_generator(.Rm(alu_mux_src2), .shift_operand(shift_operand), .immd(immd),
 			.is_mem_command(is_mem_command), .val2_out(val2)
 	);
