@@ -347,7 +347,7 @@ inout   [35:0]  GPIO_1;                 //  GPIO Connection 1
         
     wire [`EXECUTE_COMMAND_LEN - 1 : 0] execute_command_ID_out;
     wire [`REGISTER_LEN - 1:0] reg_file_ID_out1, reg_file_ID_out2;
-    wire [`REGISTER_LEN - 1:0] staged_reg_file_ID_out1, staged_reg_file_ID_out2;
+    wire [`REG_ADDRESS_LEN - 1:0] staged_reg_file_ID_out1, staged_reg_file_ID_out2;
     wire [`REG_ADDRESS_LEN - 1:0] dest_reg_ID_out;
     wire [`SIGNED_IMMEDIATE_LEN - 1:0] signed_immediate_ID_out;
     wire [`SHIFT_OPERAND_LEN - 1:0] shift_operand_ID_out;
