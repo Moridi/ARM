@@ -3,7 +3,7 @@
 module Formarding (
     input en_forwarding,
 	input WB_wb_en, MEM_wb_en,
-    input [3:0] MEM_dst, WB_dst, ID_src1, ID_src2,
+    input [`REG_ADDRESS_LEN - 1:0] MEM_dst, WB_dst, ID_src1, ID_src2,
 	
     output [1:0] sel_src1, sel_src2,
     output ignore_hazard
