@@ -3,13 +3,19 @@
 module InstructionMemory(clk, rst, address, WriteData, MemRead, MemWrite, ReadData);
 	input[`INSTRUCTION_LEN - 1:0] address, WriteData;
 	input clk, rst, MemRead, MemWrite;
-	output reg[`INSTRUCTION_LEN - 1:0] ReadData;
+	output wire [`INSTRUCTION_LEN - 1:0] ReadData;
 	integer counter = 0;
 
 	reg[`INSTRUCTION_MEM_LEN - 1:0] data[0:`INSTRUCTION_MEM_SIZE - 1];
 
+	wire [`INSTRUCTION_LEN - 1:0] address4k = {address[`INSTRUCTION_LEN - 1:2], 2'b0};
+	wire [`INSTRUCTION_LEN - 1:0] address4k_p1 = {address4k[`INSTRUCTION_LEN - 1:2], 2'b01}; // address4k + 1
+	wire [`INSTRUCTION_LEN - 1:0] address4k_p2 = {address4k[`INSTRUCTION_LEN - 1:2], 2'b10}; // address4k + 2
+	wire [`INSTRUCTION_LEN - 1:0] address4k_p3 = {address4k[`INSTRUCTION_LEN - 1:2], 2'b11}; // address4k + 3
+
+
 	// always @(posedge clk, posedge rst) begin
-	always @(*) begin
+	always @(posedge rst) begin
 		if (rst) begin
 			//for(counter=16; counter < `INSTRUCTION_MEM_SIZE; counter=counter+1)
 				//data[counter] <= `INSTRUCTION_LEN'b0;
@@ -98,14 +104,15 @@ module InstructionMemory(clk, rst, address, WriteData, MemRead, MemWrite, ReadDa
 			
 			
 		end
-		else if (MemWrite) begin
-			data[address] = WriteData[`INSTRUCTION_MEM_LEN - 1:0];
-			data[address + 1] = WriteData[`INSTRUCTION_MEM_LEN + `INSTRUCTION_MEM_LEN - 1 : `INSTRUCTION_MEM_LEN];
-			data[address + 2] = WriteData[`INSTRUCTION_MEM_LEN + `INSTRUCTION_MEM_LEN + `INSTRUCTION_MEM_LEN - 1 : `INSTRUCTION_MEM_LEN + `INSTRUCTION_MEM_LEN];
-			data[address + 3] = WriteData[`INSTRUCTION_MEM_LEN + `INSTRUCTION_MEM_LEN + `INSTRUCTION_MEM_LEN + `INSTRUCTION_MEM_LEN - 1 : `INSTRUCTION_MEM_LEN + `INSTRUCTION_MEM_LEN + `INSTRUCTION_MEM_LEN];
-		end
-		else if (MemRead)
-			ReadData = {data[address], data[address + 1], data[address + 2], data[address + 3]};
+		// else if (MemWrite) begin
+		// 	data[address] = WriteData[`INSTRUCTION_MEM_LEN - 1:0];
+		// 	data[address + 1] = WriteData[`INSTRUCTION_MEM_LEN + `INSTRUCTION_MEM_LEN - 1 : `INSTRUCTION_MEM_LEN];
+		// 	data[address + 2] = WriteData[`INSTRUCTION_MEM_LEN + `INSTRUCTION_MEM_LEN + `INSTRUCTION_MEM_LEN - 1 : `INSTRUCTION_MEM_LEN + `INSTRUCTION_MEM_LEN];
+		// 	data[address + 3] = WriteData[`INSTRUCTION_MEM_LEN + `INSTRUCTION_MEM_LEN + `INSTRUCTION_MEM_LEN + `INSTRUCTION_MEM_LEN - 1 : `INSTRUCTION_MEM_LEN + `INSTRUCTION_MEM_LEN + `INSTRUCTION_MEM_LEN];
+		// end
+		// else if (MemRead)
 	end
+	
+	assign ReadData = {data[address4k], data[address4k_p1], data[address4k_p2], data[address4k_p3]};
 
 endmodule
