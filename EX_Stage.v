@@ -12,6 +12,10 @@ module EX_Stage(
 	input [11:0] shift_operand,
 	input [3:0] status_reg_in,
 
+	//forwarding inputs:
+	input [1:0] alu_mux_sel_src1, alu_mux_sel_src2,
+	input [`REGISTER_LEN - 1:0] MEM_wb_value, WB_wb_value,
+
 	// output[`ADDRESS_LEN - 1:0] PC_out,
 	output wb_en_out, mem_r_en_out, mem_w_en_out, status_w_en_out, branch_taken_out,
 	output [`REG_ADDRESS_LEN - 1:0] dest_out,
