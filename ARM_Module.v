@@ -534,7 +534,7 @@ inout   [35:0]  GPIO_1;                 //  GPIO Connection 1
             .hazard_detected(hazard_detected)
     );
 
-    Formarding forwarding(
+    Forwarding forwarding(
         .en_forwarding(en_forwarding),
 
         .ID_src1(staged_reg_file_ID_out1),

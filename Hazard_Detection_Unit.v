@@ -19,5 +19,5 @@ module Hazard_Detection_Unit (
             : ((src2_address == mem_wb_dest) && (mem_wb_en == 1'b1) && (have_two_src == 1'b1)) ? 1'b1
             : 1'b0;
     
-    assign hazard_detected = internal_hazard & (ignore_from_forwarding | EXE_mem_read_en)
+    assign hazard_detected = internal_hazard & (ignore_from_forwarding | EXE_mem_read_en);
 endmodule

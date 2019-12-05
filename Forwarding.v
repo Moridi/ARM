@@ -1,6 +1,6 @@
 `include "Defines.v"
 
-module Formarding (
+module Forwarding (
     input en_forwarding,
 	input WB_wb_en, MEM_wb_en,
     input [`REG_ADDRESS_LEN - 1:0] MEM_dst, WB_dst, ID_src1, ID_src2,
