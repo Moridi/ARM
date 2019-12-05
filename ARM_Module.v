@@ -520,7 +520,10 @@ inout   [35:0]  GPIO_1;                 //  GPIO Connection 1
             .have_two_src(ID_two_src),
             .src1_address(reg_file_first_src_out),
             .src2_address(reg_file_second_src_out),
-            .ignore_hazard(ignore_hazard_ID_out | ignore_hazard_forwarding_out),
+            .ignore_hazard(ignore_hazard_ID_out),
+            .ignore_from_forwarding(ignore_hazard_forwarding_out),
+            // TODO : get it from EXE
+            .EXE_mem_read_en(mem_read_ID_out),
 
             .exe_wb_dest(dest_hazard_EXE_out),
             .exe_wb_en(wb_en_hazard_EXE_out),
