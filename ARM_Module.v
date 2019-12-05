@@ -347,6 +347,7 @@ inout   [35:0]  GPIO_1;                 //  GPIO Connection 1
         
     wire [`EXECUTE_COMMAND_LEN - 1 : 0] execute_command_ID_out;
     wire [`REGISTER_LEN - 1:0] reg_file_ID_out1, reg_file_ID_out2;
+    wire [`REGISTER_LEN - 1:0] staged_reg_file_ID_out1, staged_reg_file_ID_out2;
     wire [`REG_ADDRESS_LEN - 1:0] dest_reg_ID_out;
     wire [`SIGNED_IMMEDIATE_LEN - 1:0] signed_immediate_ID_out;
     wire [`SHIFT_OPERAND_LEN - 1:0] shift_operand_ID_out;
@@ -390,6 +391,9 @@ inout   [35:0]  GPIO_1;                 //  GPIO Connection 1
             .signed_immediate_out(signed_immediate_ID_out),
             .shift_operand_out(shift_operand_ID_out),
             .status_reg_out(status_reg_ID_out)
+
+            .staged_reg_file_first_src_out(staged_reg_file_ID_out1),
+            .staged_reg_file_second_src_out(staged_reg_file_ID_out2)
         );
 
     // ###############################              
@@ -530,8 +534,8 @@ inout   [35:0]  GPIO_1;                 //  GPIO Connection 1
     Formarding forwarding(
         .en_forwarding(en_forwarding),
 
-        .ID_src1(reg_file_first_src_out),
-        .ID_src2(reg_file_second_src_out),
+        .ID_src1(staged_reg_file_ID_out1),
+        .ID_src2(staged_reg_file_ID_out2),
 
         .MEM_wb_en(wb_en_hazard_MEM_out),
         .MEM_dst(dest_hazard_MEM_out),
