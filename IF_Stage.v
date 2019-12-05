@@ -30,14 +30,14 @@ module IF_Stage (
 
 	reg[`INSTRUCTION_LEN - 1:0] instruction_write_data;
 	wire[`INSTRUCTION_LEN - 1:0] ReadData;
-	reg MemRead = 1'b1;
-	reg MemWrite = 1'b0;
+	// reg MemRead = 1'b1;
+	// reg MemWrite = 1'b0;
 	
 	assign Instruction = ReadData;
 
 	InstructionMemory Instruction_Mem(.clk(clk), .rst(rst), .address(pc_out),
-			.WriteData(instruction_write_data), .MemRead(MemRead),
-			.MemWrite(MemWrite), .ReadData(ReadData)
+			.WriteData(instruction_write_data), .MemRead(1'b1),
+			.MemWrite(1'b0), .ReadData(ReadData)
 	);
 	
 endmodule
