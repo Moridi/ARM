@@ -34,8 +34,8 @@ module ID_Stage_Reg(
 	output wire [`REG_ADDRESS_LEN - 1:0] dest_reg_out,
 	output wire [`SIGNED_IMMEDIATE_LEN - 1:0] signed_immediate_out,
 	output wire [`SHIFT_OPERAND_LEN - 1:0] shift_operand_out,
-	output wire [3:0] status_reg_out
-	output wire [`REG_ADDRESS_LEN - 1:0] src1_addr_out, src2_addr_out,
+	output wire [3:0] status_reg_out,
+	output wire [`REG_ADDRESS_LEN - 1:0] src1_addr_out, src2_addr_out
 );
 
 Register_Flush #(.WORD_LENGTH(`ADDRESS_LEN)) reg_PC_in(.clk(clk), .rst(rst), .flush(flush), 

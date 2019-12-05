@@ -105,8 +105,8 @@ module ID_Stage_Module(
 		.signed_immediate_in(signed_immediate_middle),
 		.shift_operand_in(shift_operand_middle),
 		.status_reg_in(status_reg_in),
-		.src1_addr_in(src1_addr_middle)
-		.src2_addr_in(src2_addr_middle)
+		.src1_addr_in(src1_addr_middle),
+		.src2_addr_in(src2_addr_middle),
 
 		.PC_out(PC_out),			
 		.mem_read_en_out(mem_read_en_out),
@@ -121,8 +121,8 @@ module ID_Stage_Module(
 		.dest_reg_out(dest_reg_out),
 		.signed_immediate_out(signed_immediate_out),
 		.shift_operand_out(shift_operand_out),
-		.status_reg_out(status_reg_out)
-		.src1_addr_out(staged_reg_file_first_src_out)
+		.status_reg_out(status_reg_out),
+		.src1_addr_out(staged_reg_file_first_src_out),
 		.src2_addr_out(staged_reg_file_second_src_out)
 	);
 		

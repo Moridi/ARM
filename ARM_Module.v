@@ -390,7 +390,7 @@ inout   [35:0]  GPIO_1;                 //  GPIO Connection 1
             .dest_reg_out(dest_reg_ID_out),
             .signed_immediate_out(signed_immediate_ID_out),
             .shift_operand_out(shift_operand_ID_out),
-            .status_reg_out(status_reg_ID_out)
+            .status_reg_out(status_reg_ID_out),
 
             .staged_reg_file_first_src_out(staged_reg_file_ID_out1),
             .staged_reg_file_second_src_out(staged_reg_file_ID_out2)
