@@ -1,6 +1,7 @@
 `include "Defines.v"
 
 module Formarding (
+    input en_forwarding,
 	input WB_wb_en, MEM_wb_en,
     input [3:0] MEM_dst, WB_dst, ID_src1, ID_src2,
 	
@@ -21,7 +22,7 @@ module Formarding (
 		sel_src2_temp = 2'b0;
         ignore_hazard_temp = 1'b0;
         
-        if (WB_wb_en) begin
+        if (en_forwarding && WB_wb_en) begin
             if (WB_dst == ID_src1) begin
                 sel_src1_temp = `FORW_SEL_FROM_WB;
                 ignore_hazard_temp = 1'b1;
@@ -32,8 +33,8 @@ module Formarding (
                 ignore_hazard_temp = 1'b1;
             end
         end
-        
-        if (MEM_wb_en) begin
+
+        if (en_forwarding && MEM_wb_en) begin
             if (MEM_dst == ID_src1) begin
                 sel_src1_temp = `FORW_SEL_FROM_MEM;
                 ignore_hazard_temp = 1'b1;
