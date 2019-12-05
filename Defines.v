@@ -62,5 +62,5 @@
 
 //forwarding
 `define FORW_SEL_FROM_ID 2'b00
-`define FORW_SEL_FROM_EXE 2'b01
+`define FORW_SEL_FROM_RB 2'b01
 `define FORW_SEL_FROM_MEM 2'b10
