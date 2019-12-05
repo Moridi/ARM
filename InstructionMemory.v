@@ -15,7 +15,7 @@ module InstructionMemory(clk, rst, address, WriteData, MemRead, MemWrite, ReadDa
 			data[{address[`INSTRUCTION_LEN - 1:2], 2'b11}]
 		};
 
-	always @(posedge rst) begin
+	always @(*) begin
 		if (rst) begin
 			//for(counter=16; counter < `INSTRUCTION_MEM_SIZE; counter=counter+1)
 				//data[counter] <= `INSTRUCTION_LEN'b0;
