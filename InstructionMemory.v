@@ -3,18 +3,18 @@
 module InstructionMemory(clk, rst, address, WriteData, MemRead, MemWrite, ReadData);
 	input[`INSTRUCTION_LEN - 1:0] address, WriteData;
 	input clk, rst, MemRead, MemWrite;
-	output wire [`INSTRUCTION_LEN - 1:0] ReadData;
+	output [`INSTRUCTION_LEN - 1:0] ReadData;
 	integer counter = 0;
 
 	reg[`INSTRUCTION_MEM_LEN - 1:0] data[0:`INSTRUCTION_MEM_SIZE - 1];
 
-	wire [`INSTRUCTION_LEN - 1:0] address4k = {address[`INSTRUCTION_LEN - 1:2], 2'b0};
-	wire [`INSTRUCTION_LEN - 1:0] address4k_p1 = {address4k[`INSTRUCTION_LEN - 1:2], 2'b01}; // address4k + 1
-	wire [`INSTRUCTION_LEN - 1:0] address4k_p2 = {address4k[`INSTRUCTION_LEN - 1:2], 2'b10}; // address4k + 2
-	wire [`INSTRUCTION_LEN - 1:0] address4k_p3 = {address4k[`INSTRUCTION_LEN - 1:2], 2'b11}; // address4k + 3
+	assign ReadData = {
+			data[{address[`INSTRUCTION_LEN - 1:2], 2'b00}],
+			data[{address[`INSTRUCTION_LEN - 1:2], 2'b01}],
+			data[{address[`INSTRUCTION_LEN - 1:2], 2'b10}],
+			data[{address[`INSTRUCTION_LEN - 1:2], 2'b11}]
+		};
 
-
-	// always @(posedge clk, posedge rst) begin
 	always @(posedge rst) begin
 		if (rst) begin
 			//for(counter=16; counter < `INSTRUCTION_MEM_SIZE; counter=counter+1)
@@ -113,6 +113,6 @@ module InstructionMemory(clk, rst, address, WriteData, MemRead, MemWrite, ReadDa
 		// else if (MemRead)
 	end
 	
-	assign ReadData = {data[address4k], data[address4k_p1], data[address4k_p2], data[address4k_p3]};
+	
 
 endmodule
