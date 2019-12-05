@@ -6,19 +6,13 @@ module InstructionMemory(clk, rst, address, WriteData, MemRead, MemWrite, ReadDa
 	output [`INSTRUCTION_LEN - 1:0] ReadData;
 	integer counter = 0;
 
+	reg [`INSTRUCTION_LEN - 1:0] ReadDataTemp;
+
+	assign ReadData = ReadDataTemp;
 	reg[`INSTRUCTION_MEM_LEN - 1:0] data[0:`INSTRUCTION_MEM_SIZE - 1];
 
-	assign ReadData = {
-			data[{address[`INSTRUCTION_LEN - 1:2], 2'b00}],
-			data[{address[`INSTRUCTION_LEN - 1:2], 2'b01}],
-			data[{address[`INSTRUCTION_LEN - 1:2], 2'b10}],
-			data[{address[`INSTRUCTION_LEN - 1:2], 2'b11}]
-		};
-
-	always @(posedge rst) begin
+	always @(*) begin
 		if (rst) begin
-			//for(counter=16; counter < `INSTRUCTION_MEM_SIZE; counter=counter+1)
-				//data[counter] <= `INSTRUCTION_LEN'b0;
 			data[0] <= 8'b11100000;
 			data[1] <= 8'b00000000;
 			data[2] <= 8'b00000000;
@@ -100,19 +94,15 @@ module InstructionMemory(clk, rst, address, WriteData, MemRead, MemWrite, ReadDa
 			data[209] <= 8'b00000000;
 			data[210] <= 8'b00000000;
 			data[211] <= 8'b00000000;
-			
-			
-			
+	
 		end
-		// else if (MemWrite) begin
-		// 	data[address] = WriteData[`INSTRUCTION_MEM_LEN - 1:0];
-		// 	data[address + 1] = WriteData[`INSTRUCTION_MEM_LEN + `INSTRUCTION_MEM_LEN - 1 : `INSTRUCTION_MEM_LEN];
-		// 	data[address + 2] = WriteData[`INSTRUCTION_MEM_LEN + `INSTRUCTION_MEM_LEN + `INSTRUCTION_MEM_LEN - 1 : `INSTRUCTION_MEM_LEN + `INSTRUCTION_MEM_LEN];
-		// 	data[address + 3] = WriteData[`INSTRUCTION_MEM_LEN + `INSTRUCTION_MEM_LEN + `INSTRUCTION_MEM_LEN + `INSTRUCTION_MEM_LEN - 1 : `INSTRUCTION_MEM_LEN + `INSTRUCTION_MEM_LEN + `INSTRUCTION_MEM_LEN];
-		// end
-		// else if (MemRead)
+		else if (MemRead) begin
+			ReadDataTemp <= {
+				data[{address[`INSTRUCTION_LEN - 1:2], 2'b00}],
+				data[{address[`INSTRUCTION_LEN - 1:2], 2'b01}],
+				data[{address[`INSTRUCTION_LEN - 1:2], 2'b10}],
+				data[{address[`INSTRUCTION_LEN - 1:2], 2'b11}]
+			};
+		end
 	end
-	
-	
-
 endmodule

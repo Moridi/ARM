@@ -6,8 +6,6 @@ module Memory(clk, rst, address, WriteData, MemRead, MemWrite, ReadData);
 	input clk, rst, MemRead, MemWrite;
 	output wire[`INSTRUCTION_LEN - 1:0] ReadData;
 	
-	integer counter = 0;
-
 	reg[`DATA_MEMORY_LEN - 1:0] data[0:`DATA_MEMORY_SIZE - 1];
 	wire [`ADDRESS_LEN - 1:0] address4k = {address[`ADDRESS_LEN - 1:2], 2'b0} - `ADDRESS_LEN'd1024;
 	
@@ -21,8 +19,6 @@ module Memory(clk, rst, address, WriteData, MemRead, MemWrite, ReadData);
 
 	always @(posedge clk, posedge rst) begin
 		if (rst) begin
-			//for(counter=16; counter < `INSTRUCTION_MEM_SIZE; counter=counter+1)
-				//data[counter] <= `INSTRUCTION_LEN'b0;
 			data[0] <= 8'b00010000;
 			data[1] <= 8'b00000000;
 			data[2] <= 8'b00000000;
@@ -42,11 +38,6 @@ module Memory(clk, rst, address, WriteData, MemRead, MemWrite, ReadData);
 			data[13] <= 8'b10100110;
 			data[14] <= 8'b00000000;
 			data[15] <= 8'b00000000;
-			
-//			data[4] <= {6'b000000, 5'b00111, 5'b01000, 5'b00010, 11'b00000000000};
-//			data[5] <= {6'b000000, 5'b01001, 5'b01010, 5'b00011, 11'b00000000000};
-//			data[6] <= {6'b000000, 5'b01011, 5'b01100, 5'b00000, 11'b00000000000};
-//			data[7] <= {6'b000000, 5'b01101, 5'b01110, 5'b00000, 11'b00000000000};
 			
 		end
 		else if (MemWrite) begin
