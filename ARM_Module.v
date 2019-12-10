@@ -506,7 +506,6 @@ inout   [35:0]  GPIO_1;                 //  GPIO Connection 1
     // ##############################
     // #### top module elements #####
     // ##############################
-    wire ignore_hazard_forwarding_out;
 
     Status_Register Status_Register(
     .clk(CLOCK_50), .rst(rst),
@@ -521,15 +520,12 @@ inout   [35:0]  GPIO_1;                 //  GPIO Connection 1
             .src1_address(reg_file_first_src_out),
             .src2_address(reg_file_second_src_out),
             .ignore_hazard(ignore_hazard_ID_out),
-            .ignore_from_forwarding(ignore_hazard_forwarding_out),
             // TODO : get it from EXE
             .EXE_mem_read_en(mem_read_ID_out),
 
             .exe_wb_dest(dest_hazard_EXE_out),
             .exe_wb_en(wb_en_hazard_EXE_out),
             
-            .mem_wb_dest(dest_hazard_MEM_out),
-            .mem_wb_en(wb_en_hazard_MEM_out),
         // outputs:
             .hazard_detected(hazard_detected)
     );
@@ -547,8 +543,7 @@ inout   [35:0]  GPIO_1;                 //  GPIO Connection 1
         .WB_dst(wb_dest_WB_out),
         
         .sel_src1(EXE_alu_mux_sel_src1),
-        .sel_src2(EXE_alu_mux_sel_src2),
-        .ignore_hazard(ignore_hazard_forwarding_out)
+        .sel_src2(EXE_alu_mux_sel_src2)
     );
 
 endmodule
