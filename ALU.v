@@ -38,7 +38,14 @@ module ALU(
 
 			`ADC_EXE:
                 begin
-                    {cout, alu_out_temp} = alu_in1 + alu_in2 + cin;
+                    if (cin)
+                        {cout, alu_out_temp} = alu_in1 + alu_in2 + `REGISTER_LEN'd1;
+                    else
+                        {cout, alu_out_temp} = alu_in1 + alu_in2;
+
+                    // {cout, alu_out_temp} = alu_in1 + alu_in2 + cin;
+
+                        
                     v = ((alu_in1[`REGISTER_LEN - 1] == alu_in2[`REGISTER_LEN - 1])
                             & (alu_out_temp[`REGISTER_LEN - 1] != alu_in1[`REGISTER_LEN - 1]));
                 end
