@@ -30,7 +30,11 @@ module ID_Stage_Module(
 		output wire [`REG_ADDRESS_LEN - 1:0] dest_reg_out,
 		output wire [`SIGNED_IMMEDIATE_LEN - 1:0] signed_immediate_out,
 		output wire [`SHIFT_OPERAND_LEN - 1:0] shift_operand_out,
-		output wire [3:0] status_reg_out
+		output wire [3:0] status_reg_out,
+
+		output wire [`REG_ADDRESS_LEN - 1:0] staged_reg_file_second_src_out,
+			staged_reg_file_first_src_out
+
 );
 	
 	wire[`ADDRESS_LEN - 1:0] PC_middle;
@@ -44,6 +48,7 @@ module ID_Stage_Module(
 	wire [`REG_ADDRESS_LEN - 1:0] dest_reg_middle;
 	wire [`SIGNED_IMMEDIATE_LEN - 1:0] signed_immediate_middle;
 	wire [`SHIFT_OPERAND_LEN - 1:0] shift_operand_middle;
+	wire [`REG_ADDRESS_LEN - 1:0] src1_addr_middle, src2_addr_middle;
 
 	ID_Stage ID_Stage(
 		// inputs:
@@ -77,6 +82,9 @@ module ID_Stage_Module(
 			.reg_file_first_src_out(reg_file_first_src_out),
 			.ignore_hazard_out(ignore_hazard_out)
 		);
+
+	assign src1_addr_middle = reg_file_first_src_out;
+	assign src2_addr_middle = reg_file_second_src_out;
 		
 	ID_Stage_Reg ID_Stage_Reg(
 		.clk(clk),
@@ -97,6 +105,8 @@ module ID_Stage_Module(
 		.signed_immediate_in(signed_immediate_middle),
 		.shift_operand_in(shift_operand_middle),
 		.status_reg_in(status_reg_in),
+		.src1_addr_in(src1_addr_middle),
+		.src2_addr_in(src2_addr_middle),
 
 		.PC_out(PC_out),			
 		.mem_read_en_out(mem_read_en_out),
@@ -111,7 +121,9 @@ module ID_Stage_Module(
 		.dest_reg_out(dest_reg_out),
 		.signed_immediate_out(signed_immediate_out),
 		.shift_operand_out(shift_operand_out),
-		.status_reg_out(status_reg_out)
+		.status_reg_out(status_reg_out),
+		.src1_addr_out(staged_reg_file_first_src_out),
+		.src2_addr_out(staged_reg_file_second_src_out)
 	);
 		
 endmodule

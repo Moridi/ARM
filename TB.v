@@ -333,6 +333,7 @@ wire    [35:0]  GPIO_1;                 //  GPIO Connection 1
     initial begin
         #250
         SW[13] = 1'b1;
+        SW[10] = 1'b1;
         #100
         SW[13] = 1'b0;
     end

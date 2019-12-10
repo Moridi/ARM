@@ -13,6 +13,10 @@ module EX_Stage_Module(
 	input [11:0] shift_operand,
 	input [3:0] status_reg_in,
 
+	//forwarding inputs:
+	input [1:0] alu_mux_sel_src1, alu_mux_sel_src2,
+	input [`REGISTER_LEN - 1:0] MEM_wb_value, WB_wb_value,
+
     // outputs from Reg:
     output wb_en_out, mem_r_en_out, mem_w_en_out,
 	output [`REGISTER_LEN - 1:0] alu_res_out, val_Rm_out,
@@ -25,7 +29,6 @@ module EX_Stage_Module(
 	output [3:0] statusRegister_out,
 	output[`ADDRESS_LEN - 1:0] branch_address_out
 );
-
 
 	wire wb_en_middle, mem_r_en_middle, mem_w_en_middle, branch_taken_middle;
 	wire [`REGISTER_LEN - 1:0] alu_res_middle, val_Rm_middle;
@@ -53,6 +56,12 @@ module EX_Stage_Module(
             .shift_operand(shift_operand),
 			.status_reg_in(status_reg_in),
         
+	    //forwarding inputs:
+            .alu_mux_sel_src1(alu_mux_sel_src1),
+            .alu_mux_sel_src2(alu_mux_sel_src2),
+            .MEM_wb_value(MEM_wb_value),
+            .WB_wb_value(WB_wb_value),
+
         // outputs to Reg:
             .wb_en_out(wb_en_middle),
             .mem_r_en_out(mem_r_en_middle),

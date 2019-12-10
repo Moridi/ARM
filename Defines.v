@@ -59,3 +59,8 @@
 `define LSR_SHIFT_STATE 2'b01
 `define ASR_SHIFT_STATE 2'b10
 `define ROR_SHIFT_STATE 2'b11
+
+//forwarding
+`define FORW_SEL_FROM_ID 2'b00
+`define FORW_SEL_FROM_WB 2'b01
+`define FORW_SEL_FROM_MEM 2'b10
