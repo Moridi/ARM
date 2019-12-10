@@ -14,10 +14,11 @@ module Hazard_Detection_Unit (
 
     assign internal_hazard = (ignore_hazard == 1'b1) ? 1'b0
             : ((src1_address == exe_wb_dest) && (exe_wb_en == 1'b1)) ? 1'b1
-            : ((src1_address == mem_wb_dest) && (mem_wb_en == 1'b1)) ? 1'b1
+            // : ((src1_address == mem_wb_dest) && (mem_wb_en == 1'b1)) ? 1'b1
             : ((src2_address == exe_wb_dest) && (exe_wb_en == 1'b1) && (have_two_src == 1'b1)) ? 1'b1
-            : ((src2_address == mem_wb_dest) && (mem_wb_en == 1'b1) && (have_two_src == 1'b1)) ? 1'b1
+            // : ((src2_address == mem_wb_dest) && (mem_wb_en == 1'b1) && (have_two_src == 1'b1)) ? 1'b1
             : 1'b0;
     
-    assign hazard_detected = internal_hazard & (ignore_from_forwarding | EXE_mem_read_en);
+    // assign hazard_detected = internal_hazard & (~ignore_from_forwarding | EXE_mem_read_en);
+    assign hazard_detected = internal_hazard & EXE_mem_read_en;
 endmodule
