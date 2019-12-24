@@ -66,5 +66,7 @@
 `define FORW_SEL_FROM_MEM 2'b10
 
 // SRAM Interface
+`define SRAM_ENABLE 1'b0
+`define SRAM_DISABLE 1'b1
 `define SRAM_DATA_BUS 16
 `define SRAM_ADDRESS_BUS 18
