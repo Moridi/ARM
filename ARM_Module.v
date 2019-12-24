@@ -304,7 +304,7 @@ input          TD_CLK27;            //  TV Decoder 27MHz CLK
 inout   [35:0]  GPIO_0;                 //  GPIO Connection 0
 inout   [35:0]  GPIO_1;                 //  GPIO Connection 1
 
-    wire en_forwarding, rst;
+    wire en_forwarding, rst, MEM_ready;
     assign en_forwarding = SW[10];
     assign rst = SW[13];
 
@@ -324,7 +324,7 @@ inout   [35:0]  GPIO_1;                 //  GPIO Connection 1
     IF_Stage_Module IF_Stage_Module(
         // inputs:
             .clk(CLOCK_50), .rst(rst),
-            .freeze_in(hazard_detected),
+            .freeze_in(hazard_detected | ~MEM_ready),
             .Branch_taken_in(branch_taken_ID_out),
             .flush_in(flush),
             .BranchAddr_in(branch_address),
@@ -362,7 +362,7 @@ inout   [35:0]  GPIO_1;                 //  GPIO Connection 1
             .clk(CLOCK_50), .rst(rst), .PC_in(PC_IF),
             .Instruction_in(Instruction_IF),
             .status_reg_in(status_reg_ID_in),
-            .hazard(hazard_detected),
+            .hazard(hazard_detected | ~MEM_ready),
             .flush(flush),
 
         // Register file inputs:
@@ -425,6 +425,7 @@ inout   [35:0]  GPIO_1;                 //  GPIO Connection 1
             .signed_immd_24(signed_immediate_ID_out),
             .shift_operand(shift_operand_ID_out),
             .status_reg_in(status_reg_ID_out),
+            .freeze(~MEM_ready),
 
         //forwarding inputs:
             .alu_mux_sel_src1(EXE_alu_mux_sel_src1),
@@ -478,7 +479,8 @@ inout   [35:0]  GPIO_1;                 //  GPIO Connection 1
 
         //outputs from stage:
             .wb_en_hazard_in(wb_en_hazard_MEM_out),
-            .dest_hazard_in(dest_hazard_MEM_out)
+            .dest_hazard_in(dest_hazard_MEM_out),
+            .ready(MEM_ready)
     );
 
     // ##############################       
