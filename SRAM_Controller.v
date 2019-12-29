@@ -47,11 +47,34 @@ module SRAM_Controller(
     reg [1 : 0] ps, ns;
     reg [2 : 0] sram_counter;
 
-    always @(posedge clk, rst) begin
-        if (rst)
+    always @(posedge clk, posedge rst) begin
+        if (rst) begin
             ps <= IDLE;
-        else   
+            ns <= IDLE;
+        end else
             ps <= ns;
+    end
+
+    always @(posedge clk, posedge rst) begin
+        case (ps)
+            IDLE: begin
+                sram_counter <= 3'd0;
+            end
+
+            READ_STATE: begin  
+                if (sram_counter == 3'd6)
+                    sram_counter <= 3'd0;
+                else
+                    sram_counter <= sram_counter + 1;
+            end
+            
+            WRITE_STATE: begin  
+                if (sram_counter == 3'd6)
+                    sram_counter <= 3'd0;
+                else
+                    sram_counter <= sram_counter + 1;
+            end
+        endcase
     end
 
     always @(ps, read_enable, write_enable, sram_counter) begin
@@ -65,7 +88,6 @@ module SRAM_Controller(
                     ns <= WRITE_STATE;
             end
 
-
             READ_STATE: begin  
                 
                 SRAM_WE_N_reg <= `SRAM_DISABLE;              
@@ -75,19 +97,16 @@ module SRAM_Controller(
                         SRAM_DQ_reg <= `SRAM_DATA_BUS'bz;
                         // MSB
                         SRAM_ADDR_reg <= {address[17 : 1], 1'b0};
-                        sram_counter <= sram_counter + 1;                        
                     end
 
                     3'd1: begin
                         read_data_local[31 : 16] <= SRAM_DQ_reg;
                         SRAM_ADDR_reg <= {address[17 : 1], 1'b1};
-                        sram_counter <= sram_counter + 1;                        
                     end
 
                     3'd2: begin
                         // LSB
                         read_data_local[15 : 0] <= SRAM_DQ_reg;
-                        sram_counter <= sram_counter + 1;
                     end
 
                     // @TODO: Check it out.
@@ -95,11 +114,6 @@ module SRAM_Controller(
                         ready_reg <= 1'b1;
                         ns <= IDLE;
                     end
-
-                    default: begin
-                        sram_counter <= sram_counter + 1;
-                    end
-
                 endcase
             end
 
@@ -109,8 +123,6 @@ module SRAM_Controller(
                         // MSB
                         SRAM_DQ_reg <= write_data[31 : 16];
                         SRAM_ADDR_reg <= {address[17 : 1], 1'b0};
-                        sram_counter <= sram_counter + 1;                        
-
                         SRAM_WE_N_reg <= `SRAM_ENABLE;
                     end
 
@@ -118,8 +130,6 @@ module SRAM_Controller(
                         // LSB
                         SRAM_DQ_reg <= write_data[15 : 0];
                         SRAM_ADDR_reg <= {address[17 : 1], 1'b1};
-                        sram_counter <= sram_counter + 1;
-
                         SRAM_WE_N_reg <= `SRAM_ENABLE;
                     end
 
@@ -131,7 +141,6 @@ module SRAM_Controller(
 
                     default: begin
                         SRAM_WE_N_reg <= `SRAM_DISABLE;
-                        sram_counter <= sram_counter + 1;
                     end
 
                 endcase
