@@ -51,6 +51,7 @@ module SRAM_Controller(
         if (rst) begin
             ps <= IDLE;
             ns <= IDLE;
+            ready_reg <= 1'b1;
         end else
             ps <= ns;
     end
@@ -78,9 +79,12 @@ module SRAM_Controller(
     end
 
     always @(ps, read_enable, write_enable, sram_counter) begin
+        ready_reg <= 1'b0;
+
         case (ps)
             IDLE: begin
                 sram_counter <= 3'd0;
+                ready_reg <= 1'b1;
 
                 if (read_enable)
                     ns <= READ_STATE;

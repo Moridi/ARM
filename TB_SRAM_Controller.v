@@ -1,6 +1,6 @@
 `include "Defines.v"
 
-module TB_SRAM();
+module TB_SRAM_Controller();
 
     reg clk = 1'b0, rst = 1'b0;
 
