@@ -86,10 +86,14 @@ module SRAM_Controller(
                 sram_counter <= 3'd0;
                 ready_reg <= 1'b1;
 
-                if (read_enable)
+                if (read_enable) begin
                     ns <= READ_STATE;
-                else if (write_enable)
+                    ready_reg <= 1'b0;
+                end
+                else if (write_enable) begin
                     ns <= WRITE_STATE;
+                    ready_reg <= 1'b0;
+                end
             end
 
             READ_STATE: begin  
