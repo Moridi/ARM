@@ -6,6 +6,7 @@ module MEM_Stage_Module(
 	input wb_en_in, mem_r_en_in, mem_w_en_in,
 	input [`REGISTER_LEN - 1:0] alu_res_in, val_Rm,
 	input [`REG_ADDRESS_LEN - 1:0] dest_in,
+    input freeze,
 
     // outputs from Reg:
     output wb_en_out, mem_r_en_out,
@@ -66,6 +67,7 @@ module MEM_Stage_Module(
 
     MEM_Stage_Reg mem_stage_reg(
 			.clk(clk), .rst(rst),
+            .freeze(freeze),
         //inputs:
             .wb_en_in(wb_en_middle),
             .mem_r_en_in(mem_r_en_middle),

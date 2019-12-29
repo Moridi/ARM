@@ -471,6 +471,7 @@ inout   [35:0]  GPIO_1;                 //  GPIO Connection 1
             .mem_w_en_in(mem_write_EXE_out),
             .alu_res_in(alu_res_EXE_out), .val_Rm(val_Rm_EXE_out),
             .dest_in(dest_EXE_out),
+            .freeze(~MEM_ready),
 
         // outputs from Reg:
             .wb_en_out(wb_en_MEM_out), .mem_r_en_out(mem_r_en_MEM_out),
