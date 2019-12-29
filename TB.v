@@ -328,7 +328,7 @@ wire    [35:0]  GPIO_1;                 //  GPIO Connection 1
         .GPIO_1(GPIO_1)                         //  GPIO Connection 1
     );
 
-    module SRAM (
+    SRAM sram(
         .SRAM_DQ(SRAM_DQ),                //  SRAM Data bus 16 Bits
         .SRAM_ADDR(SRAM_ADDR),              //  SRAM Address bus 18 Bits
         .SRAM_UB_N(SRAM_UB_N),              //  SRAM High-byte Data Mask 
@@ -347,6 +347,5 @@ wire    [35:0]  GPIO_1;                 //  GPIO Connection 1
         #100
         SW[13] = 1'b0;
     end
-    
-endmodule
 
+endmodule
