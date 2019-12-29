@@ -35,6 +35,7 @@ module SRAM_Controller(
     reg [`SRAM_DATA_BUS - 1 : 0] SRAM_DQ_reg;
     reg [`SRAM_ADDRESS_BUS - 1 : 0]  SRAM_ADDR_reg;
     reg ready_reg, SRAM_WE_N_reg;
+    wire [`ADDRESS_LEN - 1:0] address4k = {address[`ADDRESS_LEN - 1:2], 2'b0} - `ADDRESS_LEN'd1024;
 
     assign SRAM_DQ = SRAM_DQ_reg;
     assign ready = ready_reg;
@@ -104,12 +105,12 @@ module SRAM_Controller(
                     3'd0: begin
                         SRAM_DQ_reg <= `SRAM_DATA_BUS'bz;
                         // MSB
-                        SRAM_ADDR_reg <= {address[17 : 1], 1'b0};
+                        SRAM_ADDR_reg <= {address4k[17 : 1], 1'b0};
                     end
 
                     3'd1: begin
                         read_data_local[31 : 16] <= SRAM_DQ_reg;
-                        SRAM_ADDR_reg <= {address[17 : 1], 1'b1};
+                        SRAM_ADDR_reg <= {address4k[17 : 1], 1'b1};
                     end
 
                     3'd2: begin
@@ -130,14 +131,14 @@ module SRAM_Controller(
                     3'd0: begin
                         // MSB
                         SRAM_DQ_reg <= write_data[31 : 16];
-                        SRAM_ADDR_reg <= {address[17 : 1], 1'b0};
+                        SRAM_ADDR_reg <= {address4k[17 : 1], 1'b0};
                         SRAM_WE_N_reg <= `SRAM_ENABLE;
                     end
 
                     3'd2: begin
                         // LSB
                         SRAM_DQ_reg <= write_data[15 : 0];
-                        SRAM_ADDR_reg <= {address[17 : 1], 1'b1};
+                        SRAM_ADDR_reg <= {address4k[17 : 1], 1'b1};
                         SRAM_WE_N_reg <= `SRAM_ENABLE;
                     end
 
