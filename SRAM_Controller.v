@@ -35,7 +35,9 @@ module SRAM_Controller(
     reg [`SRAM_DATA_BUS - 1 : 0] SRAM_DQ_reg;
     reg [`SRAM_ADDRESS_BUS - 1 : 0]  SRAM_ADDR_reg;
     reg ready_reg, SRAM_WE_N_reg;
-    wire [`ADDRESS_LEN - 1:0] address4k = {address[`ADDRESS_LEN - 1:2], 2'b0} - `ADDRESS_LEN'd1024;
+
+    wire [`ADDRESS_LEN - 1:0] address4k = {address[`ADDRESS_LEN - 1:2], 2'b0} - `ADDRESS_LEN'd1024;    
+    wire [`ADDRESS_LEN - 1:0] address4k_div_2 = {1'b0, address4k[`ADDRESS_LEN - 1 : 1]};
 
     assign SRAM_DQ = SRAM_DQ_reg;
     assign ready = ready_reg;
@@ -80,48 +82,48 @@ module SRAM_Controller(
     end
 
     always @(ps, read_enable, write_enable, sram_counter) begin
-        ready_reg <= `DISABLE;
+        ready_reg = `DISABLE;
 
         case (ps)
             IDLE: begin
-                sram_counter <= 3'd0;
-                ready_reg <= 1'b1;
+                sram_counter = 3'd0;
+                ready_reg = 1'b1;
 
                 if (read_enable) begin
-                    ns <= READ_STATE;
-                    ready_reg <= `DISABLE;
+                    ns = READ_STATE;
+                    ready_reg = `DISABLE;
                 end
                 else if (write_enable) begin
-                    ns <= WRITE_STATE;
-                    ready_reg <= `DISABLE;
+                    ns = WRITE_STATE;
+                    ready_reg = `DISABLE;
                 end
             end
 
             READ_STATE: begin  
                 
-                SRAM_WE_N_reg <= `SRAM_DISABLE;              
+                SRAM_WE_N_reg = `SRAM_DISABLE;              
                 
                 case (sram_counter)
                     3'd0: begin
-                        SRAM_DQ_reg <= `SRAM_DATA_BUS'bz;
+                        SRAM_DQ_reg = `SRAM_DATA_BUS'bz;
                         // MSB
-                        SRAM_ADDR_reg <= {address4k[17 : 1], 1'b0};
+                        SRAM_ADDR_reg = {address4k_div_2[17 : 1], 1'b0};
                     end
 
                     3'd1: begin
-                        read_data_local[31 : 16] <= SRAM_DQ_reg;
-                        SRAM_ADDR_reg <= {address4k[17 : 1], 1'b1};
+                        read_data_local[31 : 16] = SRAM_DQ_reg;
+                        SRAM_ADDR_reg = {address4k_div_2[17 : 1], 1'b1};
                     end
 
                     3'd2: begin
                         // LSB
-                        read_data_local[15 : 0] <= SRAM_DQ_reg;
+                        read_data_local[15 : 0] = SRAM_DQ_reg;
                     end
 
                     // @TODO: Check it out.
                     3'd6: begin
-                        ready_reg <= `ENABLE;
-                        ns <= IDLE;
+                        ready_reg = `ENABLE;
+                        ns = IDLE;
                     end
                 endcase
             end
@@ -130,26 +132,26 @@ module SRAM_Controller(
                 case (sram_counter)
                     3'd0: begin
                         // MSB
-                        SRAM_DQ_reg <= write_data[31 : 16];
-                        SRAM_ADDR_reg <= {address4k[17 : 1], 1'b0};
-                        SRAM_WE_N_reg <= `SRAM_ENABLE;
+                        SRAM_DQ_reg = write_data[31 : 16];
+                        SRAM_ADDR_reg = {address4k_div_2[17 : 1], 1'b0};
+                        SRAM_WE_N_reg = `SRAM_ENABLE;
                     end
 
                     3'd2: begin
                         // LSB
-                        SRAM_DQ_reg <= write_data[15 : 0];
-                        SRAM_ADDR_reg <= {address4k[17 : 1], 1'b1};
-                        SRAM_WE_N_reg <= `SRAM_ENABLE;
+                        SRAM_DQ_reg = write_data[15 : 0];
+                        SRAM_ADDR_reg = {address4k_div_2[17 : 1], 1'b1};
+                        SRAM_WE_N_reg = `SRAM_ENABLE;
                     end
 
                     // @TODO: Check it out.
                     3'd6: begin
-                        ready_reg <= `ENABLE;
-                        ns <= IDLE;
+                        ready_reg = `ENABLE;
+                        ns = IDLE;
                     end
 
                     default: begin
-                        SRAM_WE_N_reg <= `SRAM_DISABLE;
+                        SRAM_WE_N_reg = `SRAM_DISABLE;
                     end
                 endcase
             end
