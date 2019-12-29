@@ -362,7 +362,8 @@ inout   [35:0]  GPIO_1;                 //  GPIO Connection 1
             .clk(CLOCK_50), .rst(rst), .PC_in(PC_IF),
             .Instruction_in(Instruction_IF),
             .status_reg_in(status_reg_ID_in),
-            .hazard(hazard_detected | ~MEM_ready),
+            .hazard(hazard_detected),
+            .freeze(~MEM_ready),
             .flush(flush),
 
         // Register file inputs:
