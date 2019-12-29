@@ -111,13 +111,13 @@ module SRAM_Controller(
                     end
 
                     3'd1: begin
-                        read_data_local[31 : 16] = SRAM_DQ_reg;
+                        read_data_local[31 : 16] = SRAM_DQ;
                         SRAM_ADDR_reg = {address4k_div_2[17 : 1], 1'b1};
                     end
 
                     3'd2: begin
                         // LSB
-                        read_data_local[15 : 0] = SRAM_DQ_reg;
+                        read_data_local[15 : 0] = SRAM_DQ;
                     end
 
                     // @TODO: Check it out.
