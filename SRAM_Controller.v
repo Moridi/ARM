@@ -53,8 +53,6 @@ module SRAM_Controller(
     always @(posedge clk, posedge rst) begin
         if (rst) begin
             ps <= IDLE;
-
-            ready_reg <= 1'b1;
         end else
             ps <= ns;
     end
@@ -81,8 +79,9 @@ module SRAM_Controller(
         endcase
     end
 
-    always @(ps, read_enable, write_enable, sram_counter, posedge rst) begin
+    always @(ps, read_enable, write_enable, sram_counter, rst) begin
         if (rst) begin
+            ready_reg <= 1'b1;
             ns <= IDLE;
         end
         else begin
