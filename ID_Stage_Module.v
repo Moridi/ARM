@@ -90,6 +90,7 @@ module ID_Stage_Module(
 		.clk(clk),
 		.rst(rst),
 		.flush(flush),
+		.freeze(hazard),
 	
 		.PC_in(PC_middle),			
 		.mem_read_en_in(mem_read_en_middle),
