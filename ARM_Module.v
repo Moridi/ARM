@@ -479,7 +479,7 @@ inout   [35:0]  GPIO_1;                 //  GPIO Connection 1
         //outputs from stage:
             .wb_en_hazard_in(wb_en_hazard_MEM_out),
             .dest_hazard_in(dest_hazard_MEM_out),
-            .ready(MEM_ready)
+            .ready(MEM_ready),
 
             ////////////////////////    SRAM Interface  ////////////////////////
             .SRAM_DQ(SRAM_DQ),                //  SRAM Data bus 16 Bits

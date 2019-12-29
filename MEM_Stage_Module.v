@@ -52,7 +52,7 @@ module MEM_Stage_Module(
             .alu_res_out(alu_res_middle),
             .dest_out(dest_middle),
         //outputs to top module:
-            .ready(ready)
+            .ready(ready),
 
         ////////////////////////    SRAM Interface  ////////////////////////
             .SRAM_DQ(SRAM_DQ),                  //  SRAM Data bus 16 Bits
