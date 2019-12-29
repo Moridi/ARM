@@ -14,7 +14,8 @@ module MEM_Stage_Module(
 
     //outputs from stage:
     output wb_en_hazard_in,
-    output [`REG_ADDRESS_LEN - 1:0] dest_hazard_in
+    output [`REG_ADDRESS_LEN - 1:0] dest_hazard_in,
+    output ready
 );
 
     wire wb_en_middle, mem_r_en_middle;
@@ -40,8 +41,9 @@ module MEM_Stage_Module(
             .mem_r_en_out(mem_r_en_middle),
             .mem_out(mem_res_middle),
             .alu_res_out(alu_res_middle),
-            .dest_out(dest_middle)
+            .dest_out(dest_middle),
         //outputs to top module:
+            .ready(ready)
     );
 
     MEM_Stage_Reg mem_stage_reg(

@@ -8,7 +8,8 @@ module MEM_Stage(
 
 	output wb_en_out, mem_r_en_out,
 	output [`REGISTER_LEN - 1:0] mem_out, alu_res_out,
-	output [`REG_ADDRESS_LEN - 1:0] dest_out
+	output [`REG_ADDRESS_LEN - 1:0] dest_out,
+	output ready
 );
 	assign wb_en_out = wb_en_in;
 	assign mem_r_en_out = mem_r_en_in;
@@ -17,7 +18,8 @@ module MEM_Stage(
 
 	Memory memory(.clk(clk), .rst(rst), .address(alu_res_in),
 			.WriteData(val_Rm), .MemRead(mem_r_en_in), .MemWrite(mem_w_en_in),
-			.ReadData(mem_out)
+			.ReadData(mem_out),
+			.ready(ready)
 	);
 
 endmodule

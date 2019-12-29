@@ -12,6 +12,7 @@ module EX_Stage_Module(
 	input [23:0] signed_immd_24,
 	input [11:0] shift_operand,
 	input [3:0] status_reg_in,
+    input freeze,
 
 	//forwarding inputs:
 	input [1:0] alu_mux_sel_src1, alu_mux_sel_src2,
@@ -81,6 +82,7 @@ module EX_Stage_Module(
         // inputs:
             .clk(clk),
             .rst(rst),
+            .freeze(freeze),
 	        .wb_en_in(wb_en_middle),
             .mem_r_en_in(mem_r_en_middle),
             .mem_w_en_in(mem_w_en_middle),
