@@ -79,7 +79,7 @@ module SRAM_Controller(
     end
 
     always @(ps, read_enable, write_enable, sram_counter) begin
-        ready_reg <= 1'b0;
+        ready_reg <= `DISABLE;
 
         case (ps)
             IDLE: begin
@@ -88,11 +88,11 @@ module SRAM_Controller(
 
                 if (read_enable) begin
                     ns <= READ_STATE;
-                    ready_reg <= 1'b0;
+                    ready_reg <= `DISABLE;
                 end
                 else if (write_enable) begin
                     ns <= WRITE_STATE;
-                    ready_reg <= 1'b0;
+                    ready_reg <= `DISABLE;
                 end
             end
 
@@ -119,7 +119,7 @@ module SRAM_Controller(
 
                     // @TODO: Check it out.
                     3'd6: begin
-                        ready_reg <= 1'b1;
+                        ready_reg <= `ENABLE;
                         ns <= IDLE;
                     end
                 endcase
@@ -143,14 +143,13 @@ module SRAM_Controller(
 
                     // @TODO: Check it out.
                     3'd6: begin
-                        ready_reg <= 1'b1;
+                        ready_reg <= `ENABLE;
                         ns <= IDLE;
                     end
 
                     default: begin
                         SRAM_WE_N_reg <= `SRAM_DISABLE;
                     end
-
                 endcase
             end
         endcase
