@@ -47,7 +47,11 @@ module SRAM_Controller(
     parameter IDLE = 2'b00, READ_STATE = 2'b01, WRITE_STATE = 2'b10;
 
     reg [1 : 0] ps, ns;
-    reg [2 : 0] sram_counter;
+    wire [2 : 0] sram_counter, next_sram_counter;
+
+    Register #(.WORD_LENGTH(3)) reg_wb_en(.clk(clk), .rst(rst),
+			.ld(1'b1), .in(next_sram_counter), .out(sram_counter)
+	);
 
     assign ready = (rst == 1'b1) ? `ENABLE
         : (
@@ -60,6 +64,12 @@ module SRAM_Controller(
             : `ENABLE
         );
 
+    assign next_sram_counter = (ps == IDLE)                 ? 3'd0
+        : (ps == READ_STATE && sram_counter == 3'd6)        ? 3'd0
+        : (ps == READ_STATE)                                ? sram_counter + 3'd1
+        : (ps == WRITE_STATE && sram_counter == 3'd6)       ? 3'd0
+        : (ps == WRITE_STATE)                               ? sram_counter + 3'd1
+        : 3'd0;
 
 
 
@@ -69,32 +79,6 @@ module SRAM_Controller(
         end else
             ps <= ns;
     end
-
-    always @(posedge clk, posedge rst) begin
-        case (ps)
-            IDLE: begin
-                sram_counter <= 3'd0;
-            end
-
-            READ_STATE: begin  
-                if (sram_counter == 3'd6)
-                    sram_counter <= 3'd0;
-                else
-                    sram_counter <= sram_counter + 1;
-            end
-            
-            WRITE_STATE: begin  
-                if (sram_counter == 3'd6)
-                    sram_counter <= 3'd0;
-                else
-                    sram_counter <= sram_counter + 1;
-            end
-        endcase
-    end
-
-
-
-
 
     always @(ps, read_enable, write_enable, sram_counter, rst) begin
         if (rst) begin
