@@ -2,7 +2,7 @@
 
 module MEM_Stage_Module(
     //inputs to main moduel:
-	input clk, rst,
+	input clk, rst, freeze,
 	input wb_en_in, mem_r_en_in, mem_w_en_in,
 	input [`REGISTER_LEN - 1:0] alu_res_in, val_Rm,
 	input [`REG_ADDRESS_LEN - 1:0] dest_in,
@@ -14,6 +14,7 @@ module MEM_Stage_Module(
 
     //outputs from stage:
     output wb_en_hazard_in,
+    output ready,
     output [`REG_ADDRESS_LEN - 1:0] dest_hazard_in
 );
 
@@ -40,12 +41,14 @@ module MEM_Stage_Module(
             .mem_r_en_out(mem_r_en_middle),
             .mem_out(mem_res_middle),
             .alu_res_out(alu_res_middle),
-            .dest_out(dest_middle)
+            .dest_out(dest_middle),
         //outputs to top module:
+            .ready(ready)
     );
 
     MEM_Stage_Reg mem_stage_reg(
 			.clk(clk), .rst(rst),
+            .freeze(freeze),
         //inputs:
             .wb_en_in(wb_en_middle),
             .mem_r_en_in(mem_r_en_middle),
