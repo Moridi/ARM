@@ -24,19 +24,45 @@ module MEM_Stage(
 	assign alu_res_out = alu_res_in;
 	assign dest_out = dest_in;
 
+	SRAM_Controller SRAM_Controller(
+        .clk(clk), .rst(rst),
+
+        // Input from Memory .Stage(Stag)
+        .write_enable(mem_w_en_in), .read_enable(mem_r_en_in),
+        .address(alu_res_in),
+        .write_data(val_Rm),
+
+        // To WB Stage
+        .read_data(mem_out),
+
+        // To Freeze other Stages
+        .ready(ready),
+
+        ////////////////////////    SRAM Interface  ////////////////////////
+        .SRAM_DQ(SRAM_DQ),                //  SRAM Data bus 16 Bits
+        .SRAM_ADDR(SRAM_ADDR),              //  SRAM Address bus 18 Bits
+
+        // Active Low Signals
+        .SRAM_UB_N(SRAM_UB_N),              //  SRAM High-byte Data Mask 
+        .SRAM_LB_N(SRAM_LB_N),              //  SRAM Low-byte Data Mask 
+        .SRAM_WE_N(SRAM_WE_N),              //  SRAM Write Enable
+        .SRAM_CE_N(SRAM_CE_N),              //  SRAM Chip Enable
+        .SRAM_OE_N(SRAM_OE_N)               //  SRAM Output Enable
+    );
 
 
-	assign SRAM_DQ = 16'bz;
-	assign SRAM_ADDR = 18'b0;
-	assign SRAM_UB_N = 1'b1;
-	assign SRAM_LB_N = 1'b1;
-	assign SRAM_WE_N = 1'b1;
-	assign SRAM_CE_N = 1'b1;
-	assign SRAM_OE_N = 1'b1;
-	Memory memory(.clk(clk), .rst(rst), .address(alu_res_in),
-			.WriteData(val_Rm), .MemRead(mem_r_en_in), .MemWrite(mem_w_en_in),
-			.ReadData(mem_out),
-			.ready(ready)
-	);
+
+	// assign SRAM_DQ = 16'bz;
+	// assign SRAM_ADDR = 18'b0;
+	// assign SRAM_UB_N = 1'b1;
+	// assign SRAM_LB_N = 1'b1;
+	// assign SRAM_WE_N = 1'b1;
+	// assign SRAM_CE_N = 1'b1;
+	// assign SRAM_OE_N = 1'b1;
+	// Memory memory(.clk(clk), .rst(rst), .address(alu_res_in),
+	// 		.WriteData(val_Rm), .MemRead(mem_r_en_in), .MemWrite(mem_w_en_in),
+	// 		.ReadData(mem_out),
+	// 		.ready(ready)
+	// );
 
 endmodule
