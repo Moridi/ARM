@@ -517,6 +517,7 @@ inout   [35:0]  GPIO_1;                 //  GPIO Connection 1
     
     Hazard_Detection_Unit hazard_detection_unit(
         //inputs:
+            .with_forwarding(en_forwarding),
             .have_two_src(ID_two_src),
             .src1_address(reg_file_first_src_out),
             .src2_address(reg_file_second_src_out),
