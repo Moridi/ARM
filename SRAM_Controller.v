@@ -34,13 +34,12 @@ module SRAM_Controller(
     reg [`REGISTER_LEN - 1 : 0] read_data_local;
     reg [`SRAM_DATA_BUS - 1 : 0] SRAM_DQ_reg;
     reg [`SRAM_ADDRESS_BUS - 1 : 0]  SRAM_ADDR_reg;
-    reg ready_reg, SRAM_WE_N_reg;
+    reg SRAM_WE_N_reg;
 
     wire [`ADDRESS_LEN - 1:0] address4k = {address[`ADDRESS_LEN - 1:2], 2'b0} - `ADDRESS_LEN'd1024;    
     wire [`ADDRESS_LEN - 1:0] address4k_div_2 = {1'b0, address4k[`ADDRESS_LEN - 1 : 1]};
 
     assign SRAM_DQ = SRAM_DQ_reg;
-    assign ready = ready_reg;
     assign read_data = read_data_local;
     assign SRAM_WE_N = SRAM_WE_N_reg;
     assign SRAM_ADDR = SRAM_ADDR_reg;
@@ -49,6 +48,20 @@ module SRAM_Controller(
 
     reg [1 : 0] ps, ns;
     reg [2 : 0] sram_counter;
+
+    assign ready = (rst == 1'b1) ? `ENABLE
+        : (
+            ((ps == IDLE) && (read_enable == 1'b1 || write_enable == 1'b1))    ? `DISABLE
+            : (ps == IDLE)                                                  ? `ENABLE
+            : (ps == READ_STATE && (sram_counter == 3'd6))                  ? `ENABLE
+            : (ps == READ_STATE)                                            ? `DISABLE
+            : (ps == WRITE_STATE && (sram_counter == 3'd6))                 ? `ENABLE
+            : (ps == WRITE_STATE)                                           ? `DISABLE
+            : `ENABLE
+        );
+
+
+
 
     always @(posedge clk, posedge rst) begin
         if (rst) begin
@@ -79,9 +92,12 @@ module SRAM_Controller(
         endcase
     end
 
+
+
+
+
     always @(ps, read_enable, write_enable, sram_counter, rst) begin
         if (rst) begin
-            ready_reg <= 1'b1;
             ns <= IDLE;
         end
         else begin
@@ -90,13 +106,9 @@ module SRAM_Controller(
 
                     if (read_enable) begin
                         ns = READ_STATE;
-                        ready_reg = `DISABLE;
                     end
                     else if (write_enable) begin
                         ns = WRITE_STATE;
-                        ready_reg = `DISABLE;
-                    end else begin
-                        ready_reg = `ENABLE;
                     end
                 end
 
@@ -105,38 +117,31 @@ module SRAM_Controller(
                     
                     case (sram_counter)
                         3'd0: begin
-                            ready_reg = `DISABLE;
                             SRAM_DQ_reg = `SRAM_DATA_BUS'bz;
                             // MSB
                             SRAM_ADDR_reg = {address4k_div_2[17 : 1], 1'b0};
                         end
 
                         3'd1: begin
-                            ready_reg = `DISABLE;
                             read_data_local[31 : 16] = SRAM_DQ;
                             SRAM_ADDR_reg = {address4k_div_2[17 : 1], 1'b1};
                         end
 
                         3'd2: begin
-                            ready_reg = `DISABLE;
                             // LSB
                             read_data_local[15 : 0] = SRAM_DQ;
                         end
 
                         // @TODO: Check it out.
                         3'd6: begin
-                            ready_reg = `ENABLE;
                             ns = IDLE;
-                        end
-                        default: 
-                            ready_reg = `DISABLE;
+                        end 
                     endcase
                 end
 
                 WRITE_STATE: begin             
                     case (sram_counter)
                         3'd0: begin
-                            ready_reg = `DISABLE;
                             // MSB
                             SRAM_DQ_reg = write_data[31 : 16];
                             SRAM_ADDR_reg = {address4k_div_2[17 : 1], 1'b0};
@@ -144,7 +149,7 @@ module SRAM_Controller(
                         end
 
                         3'd2: begin
-                            ready_reg = `DISABLE;
+                            //ready_reg = `DISABLE;
                             // LSB
                             SRAM_DQ_reg = write_data[15 : 0];
                             SRAM_ADDR_reg = {address4k_div_2[17 : 1], 1'b1};
@@ -153,12 +158,10 @@ module SRAM_Controller(
 
                         // @TODO: Check it out.
                         3'd6: begin
-                            ready_reg = `ENABLE;
                             ns = IDLE;
                         end
 
                         default: begin
-                            ready_reg = `DISABLE;
                             SRAM_WE_N_reg = `SRAM_DISABLE;
                         end
                     endcase
