@@ -338,7 +338,7 @@ wire    [35:0]  GPIO_1;                 //  GPIO Connection 1
         .SRAM_CE_N(SRAM_CE_N),              //  SRAM Chip Enable
         .SRAM_OE_N(SRAM_OE_N)              //  SRAM Output Enable
     );
-    initial repeat(100000) #100 CLOCK_50 = ~CLOCK_50;
+    initial repeat(1500) #100 CLOCK_50 = ~CLOCK_50;
     
     initial begin
         #250

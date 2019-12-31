@@ -59,7 +59,7 @@ module SRAM_Controller(
 
     assign ready = (rst == 1'b1) ? `ENABLE
         : (
-            ((ps == IDLE) && (read_enable == 1'b1 || write_enable == 1'b1))    ? `DISABLE
+            ((ps == IDLE) && (read_enable == 1'b1 || write_enable == 1'b1)) ? `DISABLE
             : (ps == IDLE)                                                  ? `ENABLE
             : (ps == READ_STATE && (sram_counter == 3'd6))                  ? `ENABLE
             : (ps == READ_STATE)                                            ? `DISABLE
@@ -78,8 +78,8 @@ module SRAM_Controller(
 
     assign ns = (rst == 1'b1) ? IDLE
         : (
-            (ps == IDLE && read_enable == 1'b1)              ? READ_STATE
-            : (ps == IDLE && write_enable == 1'b1)             ? WRITE_STATE
+            (ps == IDLE && read_enable == 1'b1)                 ? READ_STATE
+            : (ps == IDLE && write_enable == 1'b1)              ? WRITE_STATE
             : (ps == IDLE)                                      ? IDLE
             : (ps == READ_STATE && (sram_counter == 3'd6))      ? IDLE
             : (ps == READ_STATE)                                ? READ_STATE
@@ -122,7 +122,6 @@ module SRAM_Controller(
                     end
 
                     3'd2: begin
-                        //ready_reg = `DISABLE;
                         // LSB
                         SRAM_DQ_reg = write_data[15 : 0];
                         SRAM_ADDR_reg = {address4k_div_2[17 : 1], 1'b1};
