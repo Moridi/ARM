@@ -26,23 +26,14 @@ module SRAM_Controller(
     output                              SRAM_OE_N               //  SRAM Output Enable
 );
 
-    assign SRAM_UB_N = `SRAM_DISABLE;
-    assign SRAM_LB_N = `SRAM_DISABLE;
-    assign SRAM_CE_N = `SRAM_DISABLE;
-    assign SRAM_OE_N = `SRAM_DISABLE;
+    assign SRAM_UB_N = `SRAM_ENABLE;
+    assign SRAM_LB_N = `SRAM_ENABLE;
+    assign SRAM_CE_N = `SRAM_ENABLE;
+    assign SRAM_OE_N = `SRAM_ENABLE;
 
     wire [`REGISTER_LEN - 1 : 0] read_data_local;
-    // reg [`SRAM_DATA_BUS - 1 : 0] SRAM_DQ_reg;
-    // reg [`SRAM_ADDRESS_BUS - 1 : 0]  SRAM_ADDR_reg;
-    // reg SRAM_WE_N_reg;
-
     wire [`ADDRESS_LEN - 1:0] address4k = {address[`ADDRESS_LEN - 1:2], 2'b0} - `ADDRESS_LEN'd1024;    
     wire [`ADDRESS_LEN - 1:0] address4k_div_2 = {1'b0, address4k[`ADDRESS_LEN - 1 : 1]};
-
-    // assign SRAM_DQ = SRAM_DQ_reg;
-    // assign read_data = read_data_local;
-    // assign SRAM_WE_N = SRAM_WE_N_reg;
-    // assign SRAM_ADDR = SRAM_ADDR_reg;
 
     parameter IDLE = 2'b00, READ_STATE = 2'b01, WRITE_STATE = 2'b10;
 
