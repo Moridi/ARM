@@ -105,7 +105,7 @@ module ID_Stage(
 	// @TODO: Check the operands: mem_write_en_out or mem_write
 	assign two_src = (~Instruction_in[25]) | mem_write_en_out;
 	assign shift_operand = Instruction_in[`SHIFT_OPERAND_INDEX - 1:0];
-	assign dest_reg_out = (is_mul == 1'b0) ? Instruction_in[15:12] : Instruction_in[16:10];
+	assign dest_reg_out = (is_mul == 1'b0) ? Instruction_in[15:12] : Instruction_in[19:16];
 	assign signed_immediate = Instruction_in[23:0];
 	
 endmodule
