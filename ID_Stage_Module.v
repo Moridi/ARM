@@ -23,7 +23,7 @@ module ID_Stage_Module(
 		output wire [`ADDRESS_LEN - 1:0] PC_out,
 		output wire mem_read_en_out, mem_write_en_out,
 			wb_enable_out, immediate_out,
-			branch_taken_out, status_write_enable_out,
+			branch_taken_out, status_write_enable_out, is_mul_out,
 			
 		output wire [`EXECUTE_COMMAND_LEN - 1 : 0] execute_command_out,
 		output wire [`REGISTER_LEN - 1:0] reg_file_out1, reg_file_out2,
@@ -37,7 +37,7 @@ module ID_Stage_Module(
 
 	wire mem_read_en_middle, mem_write_en_middle,
 		wb_enable_middle, immediate_middle,
-		branch_taken_middle, status_write_enable_middle;
+		branch_taken_middle, status_write_enable_middle, is_mul_middle;
 		
 	wire [`EXECUTE_COMMAND_LEN - 1 : 0] execute_command_middle;
 	wire [`REGISTER_LEN - 1:0] reg_file_middle1, reg_file_middle2;
@@ -70,6 +70,7 @@ module ID_Stage_Module(
 			.dest_reg_out(dest_reg_middle),
 			.signed_immediate(signed_immediate_middle),
 			.shift_operand(shift_operand_middle),
+			.is_mul_out(is_mul_middle),
 			
 		// outputs to top-module:
 			.two_src(two_src_out),
@@ -97,6 +98,7 @@ module ID_Stage_Module(
 		.signed_immediate_in(signed_immediate_middle),
 		.shift_operand_in(shift_operand_middle),
 		.status_reg_in(status_reg_in),
+		.is_mul_in(is_mul_middle),
 
 		.PC_out(PC_out),			
 		.mem_read_en_out(mem_read_en_out),
@@ -111,7 +113,8 @@ module ID_Stage_Module(
 		.dest_reg_out(dest_reg_out),
 		.signed_immediate_out(signed_immediate_out),
 		.shift_operand_out(shift_operand_out),
-		.status_reg_out(status_reg_out)
+		.status_reg_out(status_reg_out),
+		.is_mul_out(is_mul_out)
 	);
 		
 endmodule

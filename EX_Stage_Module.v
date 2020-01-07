@@ -12,6 +12,7 @@ module EX_Stage_Module(
 	input [23:0] signed_immd_24,
 	input [11:0] shift_operand,
 	input [3:0] status_reg_in,
+    input is_mul,
 
     // outputs from Reg:
     output wb_en_out, mem_r_en_out, mem_w_en_out,
@@ -52,6 +53,7 @@ module EX_Stage_Module(
             .signed_immd_24(signed_immd_24),
             .shift_operand(shift_operand),
 			.status_reg_in(status_reg_in),
+            .is_mul(is_mul),
         
         // outputs to Reg:
             .wb_en_out(wb_en_middle),

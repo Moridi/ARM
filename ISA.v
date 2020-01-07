@@ -17,3 +17,4 @@
 `define TST 4'b1000
 `define LDR 4'b0100
 `define STR 4'b0100
+// `define MUL 4'b0000

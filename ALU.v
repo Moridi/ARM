@@ -73,6 +73,12 @@ module ALU(
                 alu_out_temp	 = 	alu_in1 + alu_in2;
 			`STR_EXE:
                 alu_out_temp	 = 	alu_in1 + alu_in2;
+
+            `MUL_EXE: begin
+                alu_out_temp	 = 	alu_in1 * alu_in2;
+                v = ((alu_in1[`REGISTER_LEN - 1] == alu_in2[`REGISTER_LEN - 1])
+                            & (alu_out_temp[`REGISTER_LEN - 1] != alu_in1[`REGISTER_LEN - 1]));
+                end
 		endcase
 	end
 

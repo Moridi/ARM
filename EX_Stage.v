@@ -4,7 +4,7 @@ module EX_Stage(
 	input clk, rst,
 	input[`ADDRESS_LEN - 1:0] PC_in,
 	input wb_en_in, mem_r_en_in, mem_w_en_in, status_w_en_in, branch_taken_in,
-	input immd,
+	input immd, is_mul,
 	input [`EXECUTE_COMMAND_LEN - 1:0] exe_cmd,
 	input [`REGISTER_LEN - 1:0] val_Rn, val_Rm_in,
 	input [`REG_ADDRESS_LEN - 1:0] dest_in,
@@ -20,7 +20,7 @@ module EX_Stage(
 	output[`ADDRESS_LEN - 1:0] branch_address
 );
 	wire is_mem_command;
-	wire [`REGISTER_LEN - 1:0] val2;
+	wire [`REGISTER_LEN - 1:0] val2, alu_in2;
 
 	// @TODO: Check it out
 	// assign PC_out = PC_in;
@@ -45,8 +45,10 @@ module EX_Stage(
 			.is_mem_command(is_mem_command), .val2_out(val2)
 	);
 
+	assign alu_in2 = (is_mul == 1'b0) ? val2 : val_Rm_in;
+
 	// @TODO: Check the cin port
-	ALU alu(.alu_in1(val_Rn), .alu_in2(val2), .alu_command(exe_cmd), .cin(status_reg_in[2]),
+	ALU alu(.alu_in1(val_Rn), .alu_in2(alu_in2), .alu_command(exe_cmd), .cin(status_reg_in[2]),
 			.alu_out(alu_res), .statusRegister(statusRegister)
 	);
 

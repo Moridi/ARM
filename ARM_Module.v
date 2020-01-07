@@ -340,7 +340,7 @@ inout   [35:0]  GPIO_1;                 //  GPIO Connection 1
     
     wire mem_read_ID_out, mem_write_ID_out,
         wb_enable_ID_out, immediate_ID_out,
-        status_write_enable_ID_out;
+        status_write_enable_ID_out, is_mul_ID_out;
         
     wire [`EXECUTE_COMMAND_LEN - 1 : 0] execute_command_ID_out;
     wire [`REGISTER_LEN - 1:0] reg_file_ID_out1, reg_file_ID_out2;
@@ -386,7 +386,8 @@ inout   [35:0]  GPIO_1;                 //  GPIO Connection 1
             .dest_reg_out(dest_reg_ID_out),
             .signed_immediate_out(signed_immediate_ID_out),
             .shift_operand_out(shift_operand_ID_out),
-            .status_reg_out(status_reg_ID_out)
+            .status_reg_out(status_reg_ID_out),
+            .is_mul_out(is_mul_ID_out)
         );
 
     // ###############################              
@@ -418,6 +419,7 @@ inout   [35:0]  GPIO_1;                 //  GPIO Connection 1
             .signed_immd_24(signed_immediate_ID_out),
             .shift_operand(shift_operand_ID_out),
             .status_reg_in(status_reg_ID_out),
+            .is_mul(is_mul_ID_out),
 
         // outputs from Reg:
             .wb_en_out(wb_enable_EXE_out),
