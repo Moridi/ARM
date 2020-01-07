@@ -33,7 +33,7 @@ module ControlUnit(
     assign ignore_hazard = ignore_hazard_reg;
     assign is_mul = is_mul_reg;
     
-    always @(mode, opcode, s) begin
+    always @(mode, opcode, s, mul_detector, immediate_in) begin
 
         mem_write_reg = `DISABLE;
         mem_read_reg = `DISABLE;
@@ -79,7 +79,7 @@ module ControlUnit(
                         end
 
                         `AND : begin
-                            if (mul_detector == 4'b1001 && immediate_in == 1'b0) begin // MUL
+                            if ((mul_detector == 4'b1001) && (immediate_in == 1'b0)) begin // MUL
                                 execute_command_reg = `MUL_EXE;
                                 wb_enable_reg = `ENABLE;
                                 is_mul_reg = `ENABLE;
