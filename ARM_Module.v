@@ -341,6 +341,8 @@ inout   [35:0]  GPIO_1;                 //  GPIO Connection 1
     wire mem_read_ID_out, mem_write_ID_out,
         wb_enable_ID_out, immediate_ID_out,
         status_write_enable_ID_out;
+    
+    wire ID_have_three_source;//, ID_have_three_source_reg_out;
         
     wire [`EXECUTE_COMMAND_LEN - 1 : 0] execute_command_ID_out;
     wire [`REGISTER_LEN - 1:0] reg_file_ID_out1, reg_file_ID_out2;
@@ -388,6 +390,7 @@ inout   [35:0]  GPIO_1;                 //  GPIO Connection 1
             .signed_immediate_out(signed_immediate_ID_out),
             .shift_operand_out(shift_operand_ID_out),
             .status_reg_out(status_reg_ID_out)
+            // .have_three_source_reg_out(ID_have_three_source_reg_out)
         );
 
     // ###############################              
@@ -402,6 +405,7 @@ inout   [35:0]  GPIO_1;                 //  GPIO Connection 1
     wire [`REG_ADDRESS_LEN - 1:0] dest_hazard_EXE_out;
     wire status_w_en_EXE_out;
     wire [3:0] status_reg_EXE_out;
+    wire EXE_freeze;
             
     EX_Stage_Module EX_Stage_Module(
         //inputs to main moduel:
@@ -419,6 +423,7 @@ inout   [35:0]  GPIO_1;                 //  GPIO Connection 1
             .signed_immd_24(signed_immediate_ID_out),
             .shift_operand(shift_operand_ID_out),
             .status_reg_in(status_reg_ID_out),
+            .have_three_source(ID_have_three_source),
 
         // outputs from Reg:
             .wb_en_out(wb_enable_EXE_out),
@@ -427,6 +432,7 @@ inout   [35:0]  GPIO_1;                 //  GPIO Connection 1
             .alu_res_out(alu_res_EXE_out),
             .val_Rm_out(val_Rm_EXE_out),
             .dest_out(dest_EXE_out),
+            .freeze(EXE_freeze),
 
         //outputs from main module:
             .wb_en_hazard_in(wb_en_hazard_EXE_out),
@@ -504,10 +510,12 @@ inout   [35:0]  GPIO_1;                 //  GPIO Connection 1
     Hazard_Detection_Unit hazard_detection_unit(
         //inputs:
             .have_two_src(ID_two_src),
-            .have_three_source(ID_have_three_source),
             .src1_address(reg_file_first_src_out),
             .src2_address(reg_file_second_src_out),
             .ignore_hazard(ignore_hazard_ID_out),
+
+            .have_three_source(ID_have_three_source),
+            .freeze_exe(EXE_freeze),
 
             .exe_wb_dest(dest_hazard_EXE_out),
             .exe_wb_en(wb_en_hazard_EXE_out),

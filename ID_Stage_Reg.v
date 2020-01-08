@@ -19,6 +19,7 @@ module ID_Stage_Reg(
 	input [`SIGNED_IMMEDIATE_LEN - 1:0] signed_immediate_in,
 	input [`SHIFT_OPERAND_LEN - 1:0] shift_operand_in,
 	input [3:0] status_reg_in,
+	// input have_three_source_in,
 
 	output wire mem_read_en_out,
 	output wire mem_write_en_out,
@@ -34,6 +35,7 @@ module ID_Stage_Reg(
 	output wire [`SIGNED_IMMEDIATE_LEN - 1:0] signed_immediate_out,
 	output wire [`SHIFT_OPERAND_LEN - 1:0] shift_operand_out,
 	output wire [3:0] status_reg_out
+	// output wire have_three_source_reg_out
 );
 
 Register_Flush #(.WORD_LENGTH(`ADDRESS_LEN)) reg_PC_in(.clk(clk), .rst(rst), .flush(flush), 
@@ -77,5 +79,8 @@ Register_Flush #(.WORD_LENGTH(`SHIFT_OPERAND_LEN)) reg_shift_operand_in(.clk(clk
 
 Register_Flush #(.WORD_LENGTH(4)) reg_status_reg_in(.clk(clk), .rst(rst), .flush(flush), 
 		.ld(1'b1), .in(status_reg_in), .out(status_reg_out));
-		
+
+// Register_Flush #(.WORD_LENGTH(1)) have_three_source_register(.clk(clk), .rst(rst), .flush(flush), 
+// 		.ld(1'b1), .in(have_three_source_in), .out(have_three_source_reg_out));
+
 endmodule

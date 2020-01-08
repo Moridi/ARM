@@ -31,6 +31,7 @@ module ID_Stage_Module(
 		output wire [`SIGNED_IMMEDIATE_LEN - 1:0] signed_immediate_out,
 		output wire [`SHIFT_OPERAND_LEN - 1:0] shift_operand_out,
 		output wire [3:0] status_reg_out
+		// output wire have_three_source_reg_out
 );
 	
 	wire[`ADDRESS_LEN - 1:0] PC_middle;
@@ -98,6 +99,7 @@ module ID_Stage_Module(
 		.signed_immediate_in(signed_immediate_middle),
 		.shift_operand_in(shift_operand_middle),
 		.status_reg_in(status_reg_in),
+		// .have_three_source_in(have_three_source),
 
 		.PC_out(PC_out),			
 		.mem_read_en_out(mem_read_en_out),
@@ -113,6 +115,7 @@ module ID_Stage_Module(
 		.signed_immediate_out(signed_immediate_out),
 		.shift_operand_out(shift_operand_out),
 		.status_reg_out(status_reg_out)
+		// .have_three_source_reg_out(have_three_source_reg_out)
 	);
 		
 endmodule

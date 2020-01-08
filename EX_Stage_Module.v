@@ -12,11 +12,13 @@ module EX_Stage_Module(
 	input [23:0] signed_immd_24,
 	input [11:0] shift_operand,
 	input [3:0] status_reg_in,
+    input have_three_source,
 
     // outputs from Reg:
     output wb_en_out, mem_r_en_out, mem_w_en_out,
 	output [`REGISTER_LEN - 1:0] alu_res_out, val_Rm_out,
 	output [`REG_ADDRESS_LEN - 1:0] dest_out,
+    output freeze,
 
     //outputs from main module:
     output wb_en_hazard_in,
@@ -68,10 +70,16 @@ module EX_Stage_Module(
             .branch_address(branch_address_out)
 	);
 
+	RegisterToggle #(.WORD_LENGTH(1)) freeze_reg(.clk(clk), .rst(rst),
+            .in(have_three_source), .out(freeze)
+	);
+
     EX_Stage_Reg ex_stage_reg(
         // inputs:
             .clk(clk),
             .rst(rst),
+            .freeze(freeze),
+
 	        .wb_en_in(wb_en_middle),
             .mem_r_en_in(mem_r_en_middle),
             .mem_w_en_in(mem_w_en_middle),
