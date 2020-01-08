@@ -15,14 +15,26 @@ module Val2Generator(
 
     assign val2_out = (is_mem_command == `DISABLE) ? 
         (
-            // (immd == 1'b1) ? {24'b0, shift_operand[7:0]} // need for loop here.
-            (immd == 1'b1) ? (
-                    (shift_operand[11:8] == 4'b0) ? {24'b0, shift_operand[7:0]} : imd_shifted)
-            : (shift_operand[6:5] == `LSL_SHIFT_STATE) ? Rm << {1'b0, shift_operand[11:7]}
-            : (shift_operand[6:5] == `LSR_SHIFT_STATE) ? Rm >> {1'b0, shift_operand[11:7]}
-            : (shift_operand[6:5] == `ASR_SHIFT_STATE) ? Rm >>> {1'b0, shift_operand[11:7]}            
-            : ((shift_operand[6:5] == `ROR_SHIFT_STATE) && (shift_operand[11:8] == 4'b0)) ? Rm
-            : rm_rotate
+            (immd == 1'b1) ?
+            (
+                (shift_operand[11:8] == 4'b0) ?
+                    {24'b0, shift_operand[7:0]}
+                : imd_shifted
+            )
+            : (shift_operand[4] == 1'b0) ?
+            (
+                (shift_operand[6:5] == `LSL_SHIFT_STATE) ?
+                    Rm << {1'b0, shift_operand[11:7]}
+                : (shift_operand[6:5] == `LSR_SHIFT_STATE) ?
+                    Rm >> {1'b0, shift_operand[11:7]}
+                : (shift_operand[6:5] == `ASR_SHIFT_STATE) ?
+                    Rm >>> {1'b0, shift_operand[11:7]}            
+                : rm_rotate
+            )
+            :
+            (
+                rm_rotate
+            )
         )
         : {20'b0, shift_operand};
     

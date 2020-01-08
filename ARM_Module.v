@@ -368,6 +368,7 @@ inout   [35:0]  GPIO_1;                 //  GPIO Connection 1
 
         // Wired Outputs:
             .two_src_out(ID_two_src),
+            .have_three_source(ID_have_three_source),
             .reg_file_second_src_out(reg_file_second_src_out),
             .reg_file_first_src_out(reg_file_first_src_out),
             .ignore_hazard_out(ignore_hazard_ID_out),
@@ -503,6 +504,7 @@ inout   [35:0]  GPIO_1;                 //  GPIO Connection 1
     Hazard_Detection_Unit hazard_detection_unit(
         //inputs:
             .have_two_src(ID_two_src),
+            .have_three_source(ID_have_three_source),
             .src1_address(reg_file_first_src_out),
             .src2_address(reg_file_second_src_out),
             .ignore_hazard(ignore_hazard_ID_out),

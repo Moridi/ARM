@@ -16,7 +16,7 @@ module ID_Stage_Module(
 		input reg_file_wb_en, hazard,
 			
 	// outputs from Stage:
-		output wire two_src_out, ignore_hazard_out,
+		output wire have_three_source, two_src_out, ignore_hazard_out,
 		output wire [`REG_ADDRESS_LEN - 1:0] reg_file_second_src_out, reg_file_first_src_out,
 	
 	// outputs from Reg:
@@ -73,6 +73,7 @@ module ID_Stage_Module(
 			
 		// outputs to top-module:
 			.two_src(two_src_out),
+			.have_three_source(have_three_source),
 			.reg_file_second_src_out(reg_file_second_src_out),
 			.reg_file_first_src_out(reg_file_first_src_out),
 			.ignore_hazard_out(ignore_hazard_out)

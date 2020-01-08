@@ -18,7 +18,7 @@ module ID_Stage(
 		
 	output [`EXECUTE_COMMAND_LEN - 1 : 0] execute_command_out,
 	output [`REGISTER_LEN - 1:0] reg_file_out1, reg_file_out2,
-	output two_src,
+	output two_src, have_three_source,
 	output [`REG_ADDRESS_LEN - 1:0] dest_reg_out,
 	output [`SIGNED_IMMEDIATE_LEN - 1:0] signed_immediate,
 	output [`SHIFT_OPERAND_LEN - 1:0] shift_operand,
@@ -28,17 +28,16 @@ module ID_Stage(
 
 	wire[`EXECUTE_COMMAND_LEN - 1 : 0] execute_command;
 
-	wire[`REG_ADDRESS_LEN - 1:0] reg_file_src1, reg_file_src2;
+	wire[`REG_ADDRESS_LEN - 1:0] reg_file_src1, reg_file_src2, reg_file_src2_without_rs;
 	
 	wire mem_read, mem_write,
 		wb_enable, immediate,
-		branch_taken, status_write_enable,
+		branch_taken_control_unit, status_write_enable,
 		cond_state, control_unit_mux_enable;
 
 	// Number of control signals = 6
 	wire[`EXECUTE_COMMAND_LEN + 6 - 1 : 0] control_unit_mux_in, control_unit_mux_out;
-		
-	
+
 	// Control Unit
 	ControlUnit control_unit(
 		.mode(Instruction_in[27 : 26]), .opcode(Instruction_in[24 : 21]),
@@ -46,18 +45,28 @@ module ID_Stage(
 		.execute_command(execute_command),
 		.mem_read(mem_read), .mem_write(mem_write),
 		.wb_enable(wb_enable), .immediate(immediate),
-		.branch_taken(branch_taken),
+		.branch_taken(branch_taken_control_unit),
 		.status_write_enable(status_write_enable),
 		.ignore_hazard(ignore_hazard_out)
 	);
-
 		
+	RegisterShiftController register_shift_controller(
+		.mode(Instruction_in[27 : 26]), .immediate(Instruction_in[25]),
+		.rs_identifier(Instruction_in[7]), .rm_identifier(Instruction_in[4]),
+		.have_three_source(have_three_source)
+	);
+
 	// Register File
-	MUX_2_to_1 #(.WORD_LENGTH(4)) reg_file_src2_mux(
+	MUX_2_to_1 #(.WORD_LENGTH(4)) reg_file_src2_without_rs_mux(
 			.first(Instruction_in[15:12]), .second(Instruction_in[3:0]),
 			.sel_first(mem_write), .sel_second(~mem_write),
-			.out(reg_file_src2));
+			.out(reg_file_src2_without_rs));
 	
+	MUX_2_to_1 #(.WORD_LENGTH(4)) reg_file_src2_mux(
+			.first(reg_file_src2_without_rs), .second(Instruction_in[11:8]),
+			.sel_first(1'b1), .sel_second(1'b0),
+			.out(reg_file_src2));
+
 	assign reg_file_second_src_out = reg_file_src2;
 	assign reg_file_first_src_out = reg_file_src1;
 
@@ -81,7 +90,7 @@ module ID_Stage(
 	
 	// Other Components
 	assign control_unit_mux_in = {execute_command, mem_read, mem_write,
-			immediate, wb_enable, branch_taken,
+			immediate, wb_enable, branch_taken_control_unit,
 			status_write_enable};
 	
 	assign control_unit_mux_enable = hazard | (~cond_state);
