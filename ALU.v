@@ -73,6 +73,9 @@ module ALU(
                 alu_out_temp	 = 	alu_in1 + alu_in2;
 			`STR_EXE:
                 alu_out_temp	 = 	alu_in1 + alu_in2;
+
+            `SWP_EXE:
+                alu_out_temp    =   alu_in1;
 		endcase
 	end
 

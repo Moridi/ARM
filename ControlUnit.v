@@ -4,12 +4,14 @@ module ControlUnit(
         mode, opcode, s, immediate_in,
         execute_command, mem_read, mem_write,
         wb_enable, immediate,
+        swap_opcode,
         branch_taken, status_write_enable, ignore_hazard
         );
 
     input[`MODE_LEN - 1 : 0] mode;
     input[`OPCODE_LEN - 1 : 0] opcode;
     input s, immediate_in;
+    input [3:0] swap_opcode;
     output wire[`EXECUTE_COMMAND_LEN - 1 : 0] execute_command;
     output wire mem_read, mem_write, immediate,
             wb_enable, branch_taken, status_write_enable, ignore_hazard;
@@ -94,7 +96,15 @@ module ControlUnit(
                             execute_command_reg = `CMP_EXE;
 
                         `TST :
-                            execute_command_reg = `TST_EXE;
+                            if ((immediate == 1'b0) & (s == 1'b0) & (swap_opcode == 4'b1001))
+                            begin
+                                execute_command_reg = `SWP_EXE;
+                                wb_enable_reg = `ENABLE;
+                                mem_read_reg = `ENABLE;
+                                mem_write_reg = `ENABLE;
+                            end
+                            else
+                                execute_command_reg = `TST_EXE;
 
                         `LDR : begin 
                             wb_enable_reg = `ENABLE;

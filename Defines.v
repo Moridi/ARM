@@ -33,6 +33,7 @@
 `define TST_EXE 4'b1110
 `define LDR_EXE 4'b1010
 `define STR_EXE 4'b1010
+`define SWP_EXE 4'b1111
 
 `define COND_EQ 4'b0000
 `define COND_NE 4'b0001

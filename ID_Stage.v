@@ -43,6 +43,7 @@ module ID_Stage(
 	ControlUnit control_unit(
 		.mode(Instruction_in[27 : 26]), .opcode(Instruction_in[24 : 21]),
 		.s(Instruction_in[20]), .immediate_in(Instruction_in[25]),
+		.swap_opcode(Instruction_in[7:4]),
 		.execute_command(execute_command),
 		.mem_read(mem_read), .mem_write(mem_write),
 		.wb_enable(wb_enable), .immediate(immediate),
