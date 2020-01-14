@@ -71,5 +71,10 @@
 `define SRAM_DATA_BUS 16
 `define SRAM_ADDRESS_BUS 18
 
+
+//CACHE
 `define CACHE_BLOCK_LEN 75 // 64(DATA) + 10(TAG) + 1(DIRTY_BIT)
 `define CACHE_CAPACITY 64
+`define MEM_ADDRESS_LEN 19
+`define TAG_LEN				10
+`define CACHE_INDEX_LEN		6

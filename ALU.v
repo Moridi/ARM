@@ -73,6 +73,9 @@ module ALU(
                 alu_out_temp	 = 	alu_in1 + alu_in2;
 			`STR_EXE:
                 alu_out_temp	 = 	alu_in1 + alu_in2;
+            default: begin
+                alu_out_temp = 32'd0;
+            end
 		endcase
 	end
 

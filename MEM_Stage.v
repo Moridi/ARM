@@ -19,21 +19,35 @@ module MEM_Stage(
     output          SRAM_CE_N,              //  SRAM Chip Enable
     output          SRAM_OE_N               //  SRAM Output Enable
 );
+
+    wire [`REGISTER_LEN + `REGISTER_LEN - 1 : 0] sram_out;
+    wire [`REGISTER_LEN - 1 : 0] cache_out;
+    wire cache_miss;
+
 	assign wb_en_out = wb_en_in;
 	assign mem_r_en_out = mem_r_en_in;
 	assign alu_res_out = alu_res_in;
 	assign dest_out = dest_in;
 
+    wire [`ADDRESS_LEN - 1:0] address4k = {alu_res_in[`ADDRESS_LEN - 1:2], 2'b0} - `ADDRESS_LEN'd1024;
+
+    assign mem_out = (cache_miss == 1'b1) ?
+        ((address4k[2] == 1'b1) ? sram_out[31:0] : sram_out[63:32])
+        :
+        (cache_out)
+    ;
+
 	SRAM_Controller SRAM_Controller(
         .clk(clk), .rst(rst),
 
         // Input from Memory .Stage(Stag)
-        .write_enable(mem_w_en_in), .read_enable(mem_r_en_in),
-        .address(alu_res_in),
+        .write_enable(mem_w_en_in),
+        .read_enable(mem_r_en_in & cache_miss),
+        .address(address4k),
         .write_data(val_Rm),
 
         // To WB Stage
-        .read_data(mem_out),
+        .read_data(sram_out),
 
         // To Freeze other Stages
         .ready(ready),
@@ -49,6 +63,23 @@ module MEM_Stage(
         .SRAM_CE_N(SRAM_CE_N),              //  SRAM Chip Enable
         .SRAM_OE_N(SRAM_OE_N)               //  SRAM Output Enable
     );
+
+
+CACHE_Controller CACHE_Controller(
+    .clk(clk),
+    .rst(rst),
+
+    .write_en(mem_w_en_in),
+    .read_en(mem_r_en_in),
+    .mem_ready(ready),
+
+    .address(address4k),
+    .sram_data_in(sram_out),
+    .data_in(val_Rm),
+
+    .miss(cache_miss),
+    .cache_out(cache_out)
+);
 
 
 
