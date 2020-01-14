@@ -2,7 +2,7 @@
 
 module EX_Stage_Module(
     //inputs to main moduel:
-    input clk, rst,
+    input clk, rst, freeze,
 	input[`ADDRESS_LEN - 1:0] PC_in,
 	input wb_en_in, mem_r_en_in, mem_w_en_in, status_w_en_in, branch_taken_in,
 	input immd,
@@ -81,6 +81,7 @@ module EX_Stage_Module(
         // inputs:
             .clk(clk),
             .rst(rst),
+            .freeze(freeze),
 	        .wb_en_in(wb_en_middle),
             .mem_r_en_in(mem_r_en_middle),
             .mem_w_en_in(mem_w_en_middle),

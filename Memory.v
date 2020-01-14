@@ -1,10 +1,11 @@
 `include "Defines.v"
 
-module Memory(clk, rst, address, WriteData, MemRead, MemWrite, ReadData);
+module Memory(clk, rst, address, WriteData, MemRead, MemWrite, ReadData, ready);
 	input[`INSTRUCTION_LEN - 1:0] WriteData;
 	input[`ADDRESS_LEN - 1:0] address;
 	input clk, rst, MemRead, MemWrite;
 	output wire[`INSTRUCTION_LEN - 1:0] ReadData;
+	output ready;
 	
 	reg[`DATA_MEMORY_LEN - 1:0] data[0:`DATA_MEMORY_SIZE - 1];
 	wire [`ADDRESS_LEN - 1:0] address4k = {address[`ADDRESS_LEN - 1:2], 2'b0} - `ADDRESS_LEN'd1024;
@@ -13,6 +14,7 @@ module Memory(clk, rst, address, WriteData, MemRead, MemWrite, ReadData);
 	wire [`ADDRESS_LEN - 1:0] address4k_p2 = {address4k[`ADDRESS_LEN - 1:2], 2'b10}; // address4k + 2
 	wire [`ADDRESS_LEN - 1:0] address4k_p3 = {address4k[`ADDRESS_LEN - 1:2], 2'b11}; // address4k + 3
 
+	assign ready = 1'b1;
 	assign ReadData = (MemRead == `ENABLE) ? 
 			{data[address4k], data[address4k_p1], data[address4k_p2], data[address4k_p3]}
 			: `INSTRUCTION_LEN'b0;

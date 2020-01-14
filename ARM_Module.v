@@ -307,6 +307,7 @@ inout   [35:0]  GPIO_1;                 //  GPIO Connection 1
     wire en_forwarding, rst;
     assign en_forwarding = SW[10];
     assign rst = SW[13];
+    wire MEM_ready;
 
     // ##############################               
     // ########## IF Stage ##########
@@ -324,7 +325,7 @@ inout   [35:0]  GPIO_1;                 //  GPIO Connection 1
     IF_Stage_Module IF_Stage_Module(
         // inputs:
             .clk(CLOCK_50), .rst(rst),
-            .freeze_in(hazard_detected),
+            .freeze_in(hazard_detected | ~MEM_ready),
             .Branch_taken_in(branch_taken_ID_out),
             .flush_in(flush),
             .BranchAddr_in(branch_address),
@@ -364,6 +365,7 @@ inout   [35:0]  GPIO_1;                 //  GPIO Connection 1
             .status_reg_in(status_reg_ID_in),
             .hazard(hazard_detected),
             .flush(flush),
+            .freeze(~MEM_ready),
 
         // Register file inputs:
             .reg_file_wb_data(wb_value_WB),
@@ -412,6 +414,7 @@ inout   [35:0]  GPIO_1;                 //  GPIO Connection 1
     EX_Stage_Module EX_Stage_Module(
         //inputs to main moduel:
             .clk(CLOCK_50), .rst(rst),
+            .freeze(~MEM_ready),
             .PC_in(PC_ID),
             .wb_en_in(wb_enable_ID_out), .mem_r_en_in(mem_read_ID_out),
             .mem_w_en_in(mem_write_ID_out),
@@ -465,6 +468,7 @@ inout   [35:0]  GPIO_1;                 //  GPIO Connection 1
     MEM_Stage_Module MEM_Stage_Module(
         //inputs to main moduel:
             .clk(CLOCK_50), .rst(rst),
+            .freeze(~MEM_ready),
             .wb_en_in(wb_enable_EXE_out),
             .mem_r_en_in(mem_read_EXE_out),
             .mem_w_en_in(mem_write_EXE_out),
@@ -478,7 +482,17 @@ inout   [35:0]  GPIO_1;                 //  GPIO Connection 1
 
         //outputs from stage:
             .wb_en_hazard_in(wb_en_hazard_MEM_out),
-            .dest_hazard_in(dest_hazard_MEM_out)
+            .dest_hazard_in(dest_hazard_MEM_out),
+            .ready(MEM_ready),
+
+        ////////////////////////    SRAM Interface  ////////////////////////
+            .SRAM_DQ(SRAM_DQ),                  //  SRAM Data bus 16 Bits
+            .SRAM_ADDR(SRAM_ADDR),              //  SRAM Address bus 18 Bits
+            .SRAM_UB_N(SRAM_UB_N),              //  SRAM High-byte Data Mask 
+            .SRAM_LB_N(SRAM_LB_N),              //  SRAM Low-byte Data Mask 
+            .SRAM_WE_N(SRAM_WE_N),              //  SRAM Write Enable
+            .SRAM_CE_N(SRAM_CE_N),              //  SRAM Chip Enable
+            .SRAM_OE_N(SRAM_OE_N)               //  SRAM Output Enable
     );
 
     // ##############################       

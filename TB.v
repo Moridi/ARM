@@ -328,7 +328,17 @@ wire    [35:0]  GPIO_1;                 //  GPIO Connection 1
         .GPIO_1(GPIO_1)                         //  GPIO Connection 1
         );
     
-    initial repeat(1000) #100 CLOCK_50 = ~CLOCK_50;
+
+    SRAM sram(
+        .SRAM_DQ(SRAM_DQ),                //  SRAM Data bus 16 Bits
+        .SRAM_ADDR(SRAM_ADDR),              //  SRAM Address bus 18 Bits
+        .SRAM_UB_N(SRAM_UB_N),              //  SRAM High-byte Data Mask 
+        .SRAM_LB_N(SRAM_LB_N),              //  SRAM Low-byte Data Mask 
+        .SRAM_WE_N(SRAM_WE_N),              //  SRAM Write Enable
+        .SRAM_CE_N(SRAM_CE_N),              //  SRAM Chip Enable
+        .SRAM_OE_N(SRAM_OE_N)              //  SRAM Output Enable
+    );
+    initial repeat(1500) #100 CLOCK_50 = ~CLOCK_50;
     
     initial begin
         #250
