@@ -9,7 +9,7 @@ module SRAM_Controller(
     input [`REGISTER_LEN - 1 : 0] write_data,
 
     // To WB Stage
-    output [`REGISTER_LEN - 1 : 0] read_data,
+    output [`REGISTER_LEN + `REGISTER_LEN - 1 : 0] read_data,
 
     // To Freeze other Stages
     output ready,
@@ -31,7 +31,7 @@ module SRAM_Controller(
     assign SRAM_CE_N = `SRAM_ENABLE;
     assign SRAM_OE_N = `SRAM_ENABLE;
 
-    wire [`REGISTER_LEN - 1 : 0] read_data_local;
+    wire [`REGISTER_LEN + `REGISTER_LEN - 1 : 0] read_data_local;
     wire [`ADDRESS_LEN - 1:0] address4k = {address[`ADDRESS_LEN - 1:2], 2'b0} - `ADDRESS_LEN'd1024;    
     wire [`ADDRESS_LEN - 1:0] address4k_div_2 = {1'b0, address4k[`ADDRESS_LEN - 1 : 1]};
 
@@ -55,17 +55,17 @@ module SRAM_Controller(
         : (
             ((ps == IDLE) && (read_enable == 1'b1 || write_enable == 1'b1)) ? `DISABLE
             : (ps == IDLE)                                                  ? `ENABLE
-            : (ps == READ_STATE && (sram_counter == 3'd6))                  ? `ENABLE
+            : (ps == READ_STATE && (sram_counter == 3'd5))                  ? `ENABLE
             : (ps == READ_STATE)                                            ? `DISABLE
-            : (ps == WRITE_STATE && (sram_counter == 3'd6))                 ? `ENABLE
+            : (ps == WRITE_STATE && (sram_counter == 3'd5))                 ? `ENABLE
             : (ps == WRITE_STATE)                                           ? `DISABLE
             : `ENABLE
         );
 
     assign next_sram_counter = (ps == IDLE)                 ? 3'd0
-        : (ps == READ_STATE && sram_counter == 3'd6)        ? 3'd0
+        : (ps == READ_STATE && sram_counter == 3'd5)        ? 3'd0
         : (ps == READ_STATE)                                ? sram_counter + 3'd1
-        : (ps == WRITE_STATE && sram_counter == 3'd6)       ? 3'd0
+        : (ps == WRITE_STATE && sram_counter == 3'd5)       ? 3'd0
         : (ps == WRITE_STATE)                               ? sram_counter + 3'd1
         : 3'd0;
 
@@ -75,9 +75,9 @@ module SRAM_Controller(
             (ps == IDLE && read_enable == 1'b1)                 ? READ_STATE
             : (ps == IDLE && write_enable == 1'b1)              ? WRITE_STATE
             : (ps == IDLE)                                      ? IDLE
-            : (ps == READ_STATE && (sram_counter == 3'd6))      ? IDLE
+            : (ps == READ_STATE && (sram_counter == 3'd5))      ? IDLE
             : (ps == READ_STATE)                                ? READ_STATE
-            : (ps == WRITE_STATE && (sram_counter == 3'd6))     ? IDLE
+            : (ps == WRITE_STATE && (sram_counter == 3'd5))     ? IDLE
             : (ps == WRITE_STATE)                               ? WRITE_STATE
             : IDLE
         );
@@ -92,11 +92,10 @@ module SRAM_Controller(
         : `SRAM_DATA_BUS'bz;
 
     assign SRAM_ADDR = 
-        (ps == READ_STATE && (sram_counter == 3'd1))       ? {address4k_div_2[17 : 1], 1'b0}
-        : (ps == READ_STATE && (sram_counter == 3'd2))       ? {address4k_div_2[17 : 1], 1'b0}
-
-        : (ps == READ_STATE && (sram_counter == 3'd3))       ? {address4k_div_2[17 : 1], 1'b1}
-        : (ps == READ_STATE && (sram_counter == 3'd4))       ? {address4k_div_2[17 : 1], 1'b1}
+        (ps == READ_STATE && (sram_counter == 3'd0))       ? {address4k_div_2[17 : 2], 2'b00}
+        : (ps == READ_STATE && (sram_counter == 3'd1))       ? {address4k_div_2[17 : 2], 2'b01}
+        : (ps == READ_STATE && (sram_counter == 3'd2))       ? {address4k_div_2[17 : 2], 2'b10}
+        : (ps == READ_STATE && (sram_counter == 3'd3))       ? {address4k_div_2[17 : 2], 2'b11}
 
         : (ps == WRITE_STATE && (sram_counter == 3'd0))       ? {address4k_div_2[17 : 1], 1'b0}
         : (ps == WRITE_STATE && (sram_counter == 3'd1))       ? {address4k_div_2[17 : 1], 1'b0}
@@ -110,8 +109,10 @@ module SRAM_Controller(
         : `SRAM_DISABLE;
 
     assign read_data_local =
-        (ps == READ_STATE && (sram_counter == 3'd2))       ? {SRAM_DQ, read_data[15:0]}
-        : (ps == READ_STATE && (sram_counter == 3'd4))     ? {read_data[31:16], SRAM_DQ}
+        (ps == READ_STATE && (sram_counter == 3'd1))       ? {SRAM_DQ, read_data[47:0]}
+        : (ps == READ_STATE && (sram_counter == 3'd2))     ? {read_data[63:48], SRAM_DQ, read_data[31:0]}
+        : (ps == READ_STATE && (sram_counter == 3'd3))     ? {read_data[63:32], SRAM_DQ, read_data[15:0]}
+        : (ps == READ_STATE && (sram_counter == 3'd4))     ? {read_data[63:16], SRAM_DQ}
         : read_data;
 
 endmodule
